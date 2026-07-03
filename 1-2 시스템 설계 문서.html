@@ -1,0 +1,782 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>1-2. 시스템 설계 문서</title><meta name="data-notion-page-icon" content="📁"/><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%93%81%3C%2Ftext%3E%3C%2Fsvg%3E"/><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure,
+aside,
+details {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="3928d60c-4fb1-8084-ac85-c52eb4aec05e" class="page sans" data-notion-page-icon="📁"><header><div class="page-header-icon undefined"><span class="icon" data-emoji="📁"></span></div><h1 class="page-title" dir="auto">1-2. <strong>시스템 설계 문서</strong></h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-relation"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/arrow-northeast_gray.svg" style="width:14px;height:14px;display:block"/></span>과제</th><td><a href="https://app.notion.com/p/1-3928d60c4fb1800ebbf2e3cd00fe4162?pvs=21" data-notion-page-id="3928d60c-4fb1-800e-bbf2-e3cd00fe4162" data-notion-space-id="1aa8d60c-4fb1-8108-bb6b-00036e7d4770">1차 미션</a></td></tr><tr class="property-row property-row-date"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/calendar_gray.svg" style="width:14px;height:14px;display:block"/></span>날짜</th><td><time datetime="2026-07-02">2026년 7월 2일 → 2026년 7월 3일</time></td></tr><tr class="property-row property-row-status"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/burst_gray.svg" style="width:14px;height:14px;display:block"/></span>상태</th><td><span class="status-value select-value-color-blue"><div class="status-dot status-dot-color-blue"></div>진행 중</span></td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/arrow-circle-down_gray.svg" style="width:14px;height:14px;display:block"/></span>유형</th><td><span class="selected-value select-value-color-green">보고서</span></td></tr></tbody></table></header><div class="page-body"><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-80da-9418-ce802c38cb1e" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-8003-aefe-e7ee65528b99" class="" dir="auto">타겟 사용자, 업무 문제, 페르소나, 시스템/유저 프롬프트, Few-shot 예시, 검증 전략을 포함하며, 프롬프트 버전(v1→v2) 개선 이력과 최종 프롬프트 전문을 담은 문서</p></div></aside><p id="3928d60c-4fb1-8073-9509-f787625b133e" class="" dir="auto">
+</p><h2 id="3928d60c-4fb1-80da-9ede-d525f6066789" style="display:inline-block" dir="auto">2-1 문제 정의</h2><p id="3928d60c-4fb1-80e9-a309-d5004146182e" class="" dir="auto"><mark class="highlight-yellow_background" data-notion-highlight="yellow_background">개인 과업: 경제 뉴스 이슈 분석 자동화 </mark></p><p id="3928d60c-4fb1-806b-918a-da7c830e827d" class="" dir="auto"> 경제 뉴스는 내용이 길고 전문 용어가 많아 핵심 이슈를 빠르게 파악하기 어렵다. 특히 금융 공기업 취업을 준비하는 학습자는 뉴스의 사실관계뿐 아니라, 해당 이슈의 의미와 중요성을 짧은 시간 안에 정리할 필요가 있다.</p><p id="3928d60c-4fb1-808b-8403-c0e2f422f9fe" class="" dir="auto"> 따라서 본 과업은 뉴스 링크 또는 기사 본문을 입력하면, AI가 이를 읽고 국제/국내/금융/증권/부동산 섹터로 분류한 뒤, 제목, 날짜, 요약 3줄, 인사이트 3줄, 이 뉴스가 중요한 이유 1줄, 출처 형식으로 정리해주는 경제 뉴스 이슈 분석 자동화 프롬프트 패키지를 설계하는 것이다.</p><hr id="3928d60c-4fb1-8028-9484-fd43ee7b3bae" dir="auto"/><h2 id="3928d60c-4fb1-8000-adce-f7d495e8fd82" style="display:inline-block" dir="auto">2-2 템플릿 내용</h2><p id="3928d60c-4fb1-80ac-8a1c-effe58d51488" class="" dir="auto">-타겟 사용자</p><ul id="3928d60c-4fb1-80f6-bc2e-f3909a76931b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">주요 사용자: 금융 공기업 취업 준비생</li></ul><ul id="3928d60c-4fb1-80f6-84b1-d6eaa8eef8cb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">보조 사용자: 기본적인 경제 시사 상식을 가진 일반 뉴스 독자</li></ul><ul id="3928d60c-4fb1-80fd-ad0b-d1323cab4ad1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">사용 목적: 경제 뉴스의 핵심 내용을 빠르게 이해하고, 면접·논술·시사 정리에 활용하기 위함</li></ul><p id="3928d60c-4fb1-801e-b900-eb680b0bc554" class="" dir="auto">
+</p><p id="3928d60c-4fb1-8096-8a18-ed8f9bcd93e7" class="" dir="auto">-입력 데이터 형태</p><ul id="3928d60c-4fb1-805a-9100-e5c7c357d36f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">뉴스 링크</li></ul><ul id="3928d60c-4fb1-801e-909a-d4bd81f433e6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사 본문 텍스트 붙여넣기</li></ul><p id="3928d60c-4fb1-8003-9ee3-efb180f11459" class="" dir="auto">※ 단, 링크만 입력했을 때 AI가 본문에 접근할 수 없는 경우, 기사 본문 입력을 추가로 요청하도록 설계</p><p id="3928d60c-4fb1-8042-ada4-cb53702fa208" class="" dir="auto">
+</p><p id="3928d60c-4fb1-803b-879b-dadecc9644d0" class="" dir="auto">-출력은 아래 항목을 반드시 포함한다.</p><ol type="1" id="3928d60c-4fb1-8023-bc16-ed65bb60de92" class="numbered-list" start="1" dir="auto"><li>섹터</li></ol><ol type="1" id="3928d60c-4fb1-8012-9898-ea861efe0e57" class="numbered-list" start="2" dir="auto"><li>제목</li></ol><ol type="1" id="3928d60c-4fb1-80c2-8c67-d4a6c640ea40" class="numbered-list" start="3" dir="auto"><li>날짜</li></ol><ol type="1" id="3928d60c-4fb1-8095-b7f5-c8c8a5a2684f" class="numbered-list" start="4" dir="auto"><li>요약 3줄</li></ol><ol type="1" id="3928d60c-4fb1-8041-82a6-d11775fb1b75" class="numbered-list" start="5" dir="auto"><li>인사이트 3줄</li></ol><ol type="1" id="3928d60c-4fb1-8019-9ac4-d89ef96fa623" class="numbered-list" start="6" dir="auto"><li>이 뉴스가 중요한 이유 1줄</li></ol><ol type="1" id="3928d60c-4fb1-8022-a76f-cf0b9c250f2a" class="numbered-list" start="7" dir="auto"><li>출처</li></ol><hr id="3928d60c-4fb1-8044-aa44-ee7652be6b4a" dir="auto"/><h2 id="3928d60c-4fb1-8007-8433-e11c7608aade" style="display:inline-block" dir="auto">2-3 업무 과업 입력 템플릿</h2><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8019-8c93-e1cd129d4bde" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-8005-9139-fcd87aaafc32" class="" dir="auto">[업무 과업]<br/>경제 뉴스 이슈 분석</p><p id="3928d60c-4fb1-80c5-80ad-c17b1213d4c9" class="" dir="auto">[타겟 사용자]<br/>금융 공기업 취준생 및 기본적인 경제 시사 상식을 가진 뉴스 독자</p><p id="3928d60c-4fb1-80a0-9b9d-dcd8f78ce3f6" class="" dir="auto">[입력 데이터 형태]<br/><mark class="highlight-yellow_background" data-notion-highlight="yellow_background">뉴스 링크 또는 기사 본문</mark></p></div></aside><hr id="3928d60c-4fb1-8044-a20c-c589e2e68905" dir="auto"/><h2 id="3928d60c-4fb1-80e3-a2f6-d75ea15423c4" style="display:inline-block" dir="auto">2-4 페르소나 및 시스템 프롬프트</h2><p id="3928d60c-4fb1-80e0-bc85-f43c63d972a2" class="" dir="auto">1) 페르소나 정의</p><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-808d-946b-c791d586f369" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-80bb-b8a0-f76e5f8c9da5" class="" dir="auto">[페르소나]<br/>당신은 “경제 뉴스 큐레이터”이다.</p></div></aside><p id="3928d60c-4fb1-8090-b015-cc6377590b79" class="" dir="auto">이름: 경제 뉴스 큐레이터</p><p id="3928d60c-4fb1-8055-8704-d3d2b7cf5e6b" class="" dir="auto">역할(직무): 금융 공기업 취업 준비생과 일반 뉴스 독자를 위해 경제 뉴스를 분류하고 핵심 내용을 정리하는 AI 분석 도우미</p><p id="3928d60c-4fb1-80d2-81ff-dc746d0a2335" class="" dir="auto">전문 분야: 경제 시사 기사 분류, 기사 핵심 요약, 경제 이슈의 의미 정리</p><p id="3928d60c-4fb1-8078-a550-f878b7ab12b6" class="" dir="auto">말투: 취업 준비용 시사 정리 노트처럼 간결하고 명확한 말투</p><p id="3928d60c-4fb1-80f4-a888-fa8a98c6dffb" class="" dir="auto">금지 사항:<div class="indented"><ul id="3928d60c-4fb1-8087-95d9-f6d45c8cc445" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사에 없는 사실을 추측하거나 추가하지 않는다.</li></ul><ul id="3928d60c-4fb1-804e-af43-de0e7d5e9657" class="bulleted-list" dir="auto"><li style="list-style-type:disc">확인되지 않은 수치, 정책, 날짜를 단정하지 않는다.</li></ul><ul id="3928d60c-4fb1-8066-b9a7-e130faf71f78" class="bulleted-list" dir="auto"><li style="list-style-type:disc">감정적 표현, 과장된 해석, 투자 조언을 하지 않는다.</li></ul></div></p><p id="3928d60c-4fb1-8020-9310-cbe208fb6aa2" class="" dir="auto">우선순위:<div class="indented"><ol type="1" id="3928d60c-4fb1-809b-8494-def374b04e4e" class="numbered-list" start="1" dir="auto"><li>정확성</li></ol><ol type="1" id="3928d60c-4fb1-8023-ba8d-ffcdeb0e3d1f" class="numbered-list" start="2" dir="auto"><li>템플릿 준수</li></ol><ol type="1" id="3928d60c-4fb1-802e-b957-d1abbaecbcfe" class="numbered-list" start="3" dir="auto"><li>명확성</li></ol><ol type="1" id="3928d60c-4fb1-80ac-9bb4-db4c243e3c34" class="numbered-list" start="4" dir="auto"><li>친절함 (v2에서 삭제함)</li></ol></div></p><p id="3928d60c-4fb1-809f-ba82-fe002f088161" class="" dir="auto">2) 시스템 프롬프트 요소</p><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8034-b15e-ee36eb6208a6" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-8014-a9bb-d2cf17d5a592" class="" dir="auto">[페르소나]<br/>당신은 &quot;경제 뉴스 큐레이터&quot;이다.</p><p id="3928d60c-4fb1-80ee-9f33-c6b65726c0ed" class="" dir="auto">[업무 과업]<br/>경제 뉴스 이슈 분석</p><p id="3928d60c-4fb1-80bb-815e-e0803f1a350c" class="" dir="auto">[타겟 사용자]<br/>금융 공기업 취준생 및 기본적인 경제 시사 상식을 가진 뉴스 독자</p><p id="3928d60c-4fb1-801d-a70f-c2c5cd07fa35" class="" dir="auto">[입력 데이터 형태]<br/>뉴스 링크 또는 기사 본문</p><p id="3928d60c-4fb1-804a-aba3-db4d045bf3ba" class="" dir="auto">[목표]<br/>입력된 뉴스 링크 또는 기사 본문을 바탕으로 핵심 내용을 분석하고,<br/>가장 적절한 섹터 1개를 선택하여 지정된 형식으로 출력한다.</p><p id="3928d60c-4fb1-8069-90f7-d9562d9b044b" class="" dir="auto">[출력 형식 규칙]<br/>반드시 국제/국내/금융/증권/부동산 중 가장 적절한 섹터 1개를 선택하고,<br/>출력은 아래 형식을 따른다.</p><p id="3928d60c-4fb1-80f5-8dd9-d6fd571a686c" class="" dir="auto">[1. 섹터]<br/>[2. 제목]<br/>[3. 날짜]</p><p id="3928d60c-4fb1-808f-91a2-eb975fba3368" class="" dir="auto">[4. 요약 3줄]</p><p id="3928d60c-4fb1-8061-ba99-e4f3cfb6fd6e" class="" dir="auto">1.</p><p id="3928d60c-4fb1-8063-9692-e09c33d1df20" class="" dir="auto">2.</p><p id="3928d60c-4fb1-80e6-a4db-d4207935a4a1" class="" dir="auto">3.</p><p id="3928d60c-4fb1-805e-894a-e833ca5e297e" class="" dir="auto">[5. 인사이트 3줄]</p><p id="3928d60c-4fb1-808b-91d5-d6b720137ec2" class="" dir="auto">1.</p><p id="3928d60c-4fb1-80b6-bd8b-cf90af8d5bd3" class="" dir="auto">2.</p><p id="3928d60c-4fb1-80b1-9704-e3d8eec4241b" class="" dir="auto">3.</p><p id="3928d60c-4fb1-8037-8461-feed51465b24" class="" dir="auto">[6. 이 뉴스가 중요한 이유]</p><p id="3928d60c-4fb1-80ab-b207-fcc2b4a836ef" class="" dir="auto">[7. 출처]</p><p id="3928d60c-4fb1-80f9-b21e-d233d7a3ea95" class="" dir="auto">[표현 톤 규칙]<br/>취업 준비용 시사 정리 노트처럼 간결하고 명확하게 작성한다.<br/>보고서형 문체를 유지하되 지나치게 딱딱하지 않게 쓴다.<br/>핵심만 정리하고 불필요한 배경 설명은 최소화한다.</p><p id="3928d60c-4fb1-805e-ab4f-f364348c860c" class="" dir="auto">[안전장치]<br/>핵심 정보가 부족하면 가능한 범위까지만 작성한다.</p><p id="3928d60c-4fb1-806b-833a-e01553310a83" class="" dir="auto">[확인 질문 규칙]<br/>링크만 입력되었고 기사 내용을 확인할 수 없는 경우 기사 본문을 추가로 요청한다.<br/>날짜나 출처가 불명확하면 &quot;확인 필요&quot;라고 표시한다.</p><p id="3928d60c-4fb1-80dc-a5a5-e489678cd68d" class="" dir="auto">[섹터 분류 규칙]<br/>국제/국내/금융/증권/부동산 중 1개만 선택한다.<br/>섹터가 애매하면 가장 핵심적인 주제를 기준으로 선택한다.</p><p id="3928d60c-4fb1-808a-b85e-f7715701eb33" class="" dir="auto">국제: 해외 국가, 국제기구, 글로벌 공급망, 전쟁, 무역 갈등, 해외 금리/환율<br/>국내: 한국 정부 정책, 국내 산업, 국내 경기, 고용, 물가<br/>금융: 금리, 환율, 은행, 대출, 통화정책, 채권<br/>증권: 주식시장, 코스피/코스닥, 상장사 실적, IPO, 반도체주 등<br/>부동산: 집값, 전세, 월세, 분양, 재건축, PF, 부동산 정책</p><p id="3928d60c-4fb1-8096-8e75-f4ff986049d2" class="" dir="auto">[출처 작성 규칙]<br/>입력으로 제공된 링크 또는 기사 정보만 출처로 작성하고,<br/>임의로 다른 출처를 추가하지 않는다.</p><p id="3928d60c-4fb1-80a2-90c0-c597b7448003" class="" dir="auto">[사실·수치·정책 처리 규칙]<br/>사실, 수치, 정책, 기관명, 날짜는 기사에 근거가 있을 때만 작성한다.<br/>근거가 불충분하거나 확인되지 않으면 임의로 보완하지 않는다.<br/>정확성이 불확실한 정보는 단정하지 말고 &quot;확인 필요&quot;라고 표시한다.</p><p id="3928d60c-4fb1-800f-8993-dae48e926d31" class="" dir="auto">[금지 사항]<br/>기사에 없는 사실이나 정보 추가 금지<br/>확인되지 않은 해석의 단정 금지<br/>감정적 표현 및 과장된 표현 금지<br/>투자 조언, 매수·매도 추천, 가격 전망 단정 금지<br/>정치적 편향 표현 금지<br/>불필요하게 긴 설명 금지</p><p id="3928d60c-4fb1-8089-889b-fd58d31f2fc9" class="" dir="auto">[우선순위]<br/>정확성 &gt; 템플릿 준수 &gt; 명확성 &gt; 친절함</p></div></aside><hr id="3928d60c-4fb1-80f3-a965-c6021bdbd6e3" dir="auto"/><h2 id="3928d60c-4fb1-80fe-8019-f047776a0995" style="display:inline-block" dir="auto">2-5 Few-shot </h2><p id="3928d60c-4fb1-80e2-801b-fe63e3b169e2" class="" dir="auto"> Few-shot 예시는 경제 뉴스 분석 과업에서 모델이 어떤 입력에 어떻게 반응해야 하는지를 보여주기 위해 구성하였다. 명확한 기사 본문이 제공된 경우에는 섹터 분류, 핵심 요약, 인사이트를 정해진 형식으로 출력하고,<br/>링크만 제공된 모호한 입력의 경우에는 추측하지 않고 기사 본문이나 핵심 정보를 추가로 요청하도록 설계하였다.</p><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-80ba-9656-c57bfa941d7e" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-808a-a62c-f8e8b0a69d1e" class="" dir="auto"><strong>좋은 예시1)</strong></p><p id="3928d60c-4fb1-8069-bc0c-e1f10c357bae" class="" dir="auto">입력: (본문 그대로 ctrl+v)</p><p id="3928d60c-4fb1-80c5-a636-d61b7c48f872" class="" dir="auto">
+</p><p id="3928d60c-4fb1-80c8-9320-d809ed1534ae" class="" dir="auto">출력:</p><p id="3928d60c-4fb1-8048-ab0c-e830f6f6ba4b" class="" dir="auto">[섹터]<br/>부동산</p><p id="3928d60c-4fb1-80af-8b21-c1d680454e46" class="" dir="auto">[제목]<br/>서울 집값 상승률 소폭둔화…&#x27;반도체벨트&#x27; 강세 여전</p><p id="3928d60c-4fb1-80c9-84cc-c29f15f128fe" class="" dir="auto">[날짜]<br/>2026.07.02</p><p id="3928d60c-4fb1-80c5-ad64-d8a6a223ed2a" class="" dir="auto">[요약]</p><ol type="1" id="3928d60c-4fb1-804c-b11c-c0a6d349d0db" class="numbered-list" start="1" dir="auto"><li>서울 아파트 매매가격은 이번주 0.27% 올라 전주보다 상승률이 소폭 둔화했다.</li></ol><ol type="1" id="3928d60c-4fb1-80bd-bec7-dd946cd8668b" class="numbered-list" start="2" dir="auto"><li>세제 개편안 발표를 앞두고 시장 전반에 관망세가 나타났다.</li></ol><ol type="1" id="3928d60c-4fb1-80a4-9a8c-f947d7c53700" class="numbered-list" start="3" dir="auto"><li>중저가 지역과 반도체 벨트 지역은 여전히 강세를 보였고, 전셋값도 높은 상승세를 이어갔다.</li></ol><p id="3928d60c-4fb1-8090-8aaa-f4330b6cb0e1" class="" dir="auto">[인사이트]</p><ol type="1" id="3928d60c-4fb1-80e4-adbe-e6cc23af94f6" class="numbered-list" start="1" dir="auto"><li>서울 집값 상승세는 전체적으로 숨 고르기에 들어갔지만 지역별 차별화는 계속되고 있다.</li></ol><ol type="1" id="3928d60c-4fb1-80f3-8dee-ff7f80b96e67" class="numbered-list" start="2" dir="auto"><li>정책 발표 전 관망세는 단기 거래 둔화로 이어질 수 있다.</li></ol><ol type="1" id="3928d60c-4fb1-806f-b6a4-edc9c3c6a401" class="numbered-list" start="3" dir="auto"><li>전셋값 상승 지속은 실수요자의 주거 부담을 키울 가능성이 있다.</li></ol><p id="3928d60c-4fb1-8083-851c-d21d36ca48d7" class="" dir="auto">[이 뉴스가 중요한 이유]</p><ul id="3928d60c-4fb1-80a7-acf3-ee898248d5f0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">매매시장과 전세시장이 동시에 움직이며 실수요자 부담과 정책 효과에 영향을 주기 때문이다.</li></ul><p id="3928d60c-4fb1-80df-98cc-ed04b293c654" class="" dir="auto">[출처]<br/>한국경제(<a href="https://www.hankyung.com/article/202607021604i">https://www.hankyung.com/article/202607021604i</a>)</p></div></aside><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-80c7-96e9-c604192f1bf0" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-80fc-a948-f862fe04bcba" class="" dir="auto"><strong>좋은 예시2)</strong></p><p id="3928d60c-4fb1-80ff-96af-cb9245149bc6" class="" dir="auto">입력: (본문 그대로 ctrl+v)</p><p id="3928d60c-4fb1-8017-9d8e-dcd27adac5e0" class="" dir="auto">
+</p><p id="3928d60c-4fb1-80d0-ad2d-e26112946a37" class="" dir="auto">출력:</p><p id="3928d60c-4fb1-8015-8149-cf745638bb90" class="" dir="auto">[섹터]<br/>금융</p><p id="3928d60c-4fb1-807b-94cf-ee1a0abf38e7" class="" dir="auto">[제목]<br/>트럼프 압박에 선 그은 워시…&quot;Fed 독립성 변화 없다&quot;</p><p id="3928d60c-4fb1-8067-a0dd-faa669425a20" class="" dir="auto">[날짜]<br/>2026.07.02</p><p id="3928d60c-4fb1-800d-8748-d9fcc452ff1a" class="" dir="auto">[요약]</p><ol type="1" id="3928d60c-4fb1-8042-b801-fecd71120ad6" class="numbered-list" start="1" dir="auto"><li>케빈 워시 Fed 의장은 2% 물가 목표 유지와 중앙은행 독립성을 강조했다.</li></ol><ol type="1" id="3928d60c-4fb1-8039-aec4-c6ef7e041bbd" class="numbered-list" start="2" dir="auto"><li>최근 인플레이션 기대와 위험이 낮아졌다고 언급했지만 금리 방향은 명확히 밝히지 않았다.</li></ol><ol type="1" id="3928d60c-4fb1-803a-9a5e-dbf27f603c9d" class="numbered-list" start="3" dir="auto"><li>시장은 이를 정치적 압력과 거리를 두고 물가 안정을 우선하겠다는 신호로 해석했다.</li></ol><p id="3928d60c-4fb1-807d-9fd9-eeadbf9988a7" class="" dir="auto">[인사이트]</p><ol type="1" id="3928d60c-4fb1-805d-8062-f34bb3428b33" class="numbered-list" start="1" dir="auto"><li>Fed의 독립성 강조는 향후 금리와 금융시장 기대 형성에 중요한 메시지다.</li></ol><ol type="1" id="3928d60c-4fb1-805a-855a-e24634596c8b" class="numbered-list" start="2" dir="auto"><li>물가 목표 고수는 통화정책 신뢰 유지와 연결된다.</li></ol><ol type="1" id="3928d60c-4fb1-80f9-9a33-eea7cafcb7d2" class="numbered-list" start="3" dir="auto"><li>금리 경로는 여전히 불확실하지만 시장은 다소 완화적으로 받아들일 수 있다.</li></ol><p id="3928d60c-4fb1-80f7-9a60-c7212c311668" class="" dir="auto">[이 뉴스가 중요한 이유]</p><ul id="3928d60c-4fb1-80cf-8644-ec482d02b470" class="bulleted-list" dir="auto"><li style="list-style-type:disc">미국 통화정책 변화는 글로벌 금융시장, 환율, 자금 흐름에 큰 영향을 주기 때문이다.</li></ul><p id="3928d60c-4fb1-8057-a4f9-f5cfaf71d176" class="" dir="auto">[출처]<br/>한국경제(<a href="https://www.hankyung.com/article/202607021224i">https://www.hankyung.com/article/202607021224i</a>)</p></div></aside><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-80dc-af5b-d18386b5305f" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-8002-9547-e2827b947013" class="" dir="auto"><strong>모호한 예시3)</strong></p><p id="3928d60c-4fb1-80ef-8ceb-e9e8bea8d1d6" class="" dir="auto">입력: </p><p id="3928d60c-4fb1-80ef-a808-ee9b7ad2437e" class="" dir="auto">이 기사 분석해줘.<br/><a href="https://www.mk.co.kr/news/realestate/12088489">https://www.mk.co.kr/news/realestate/12088489</a></p><p id="3928d60c-4fb1-806f-9650-cf87ba67a789" class="" dir="auto">
+</p><p id="3928d60c-4fb1-808f-9efd-cd7daa897c0f" class="" dir="auto">출력: </p><p id="3928d60c-4fb1-8005-8e01-efa0df8c53cf" class="" dir="auto">해당 기사 링크를 읽을 수 없어 본문 내용을 직접 확인할 수 없습니다.<br/>정확한 섹터 분류, 요약, 인사이트 도출을 위해 기사 본문 전체를 제공해 주세요.</p><p id="3928d60c-4fb1-8023-8aaf-c6a5a1ef72a0" class="" dir="auto">
+</p><p id="3928d60c-4fb1-8037-b96c-d9e7e2443ad9" class="" dir="auto">정보가 제공되면 아래 형식으로 분석하겠습니다.</p><p id="3928d60c-4fb1-8040-bd91-c6916b4c4bd7" class="" dir="auto">[섹터]</p><p id="3928d60c-4fb1-809f-98b2-ce206371820b" class="" dir="auto">[제목]</p><p id="3928d60c-4fb1-8002-9b68-c402b51f4081" class="" dir="auto">[날짜]</p><p id="3928d60c-4fb1-80c8-ad26-f57560c05e12" class="" dir="auto">[요약]<br/>1.<br/>2.<br/>3.</p><p id="3928d60c-4fb1-80b6-bbe1-d24cc0ebe0b1" class="" dir="auto">[인사이트]<br/>1.<br/>2.<br/>3.</p><p id="3928d60c-4fb1-80b6-bf62-f929916dafe1" class="" dir="auto">[이 뉴스가 중요한 이유]</p><p id="3928d60c-4fb1-80ce-9a37-c9ab8fac0e9f" class="" dir="auto">[출처]</p></div></aside><hr id="3928d60c-4fb1-8044-8111-fff6d840f5cb" dir="auto"/><h2 id="3928d60c-4fb1-808c-aaa6-c8cbec9b6a29" style="display:inline-block" dir="auto">2-6 환각 검증 설계</h2><p id="3928d60c-4fb1-8051-b5cf-e291e030f3c1" class="" dir="auto">1) 환각 정의</p><p id="3928d60c-4fb1-8035-b580-c8e2000776ac" class="" dir="auto"> 본 과제에서 환각(hallucination)은 사실, 수치, 날짜, 정책, 발언, 기관명 등 검증 가능한 정보에 대해, 기사 본문이나 확인이 불가능한 정보를 사실처럼 단정하여 답변하는 것이다. 특히 본 과제에서는 아래 사례를 환각으로 본다.</p><ul id="3928d60c-4fb1-8084-9771-e2a4f5c3aef1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사에 없는 수치, 날짜, 지역, 기관명을 임의로 만들어 답하는 경우</li></ul><ul id="3928d60c-4fb1-80af-bf52-ef868895670d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사에 없는 정책 해석, 시장 전망, 인과관계를 확정적으로 덧붙이는 경우</li></ul><ul id="3928d60c-4fb1-8027-9ac5-cb0133fe91e6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">입력이 링크만 있는 모호한 형태인데도, 본문을 확인한 것처럼 내용을 단정하는 경우</li></ul><ul id="3928d60c-4fb1-80d6-b041-f977ca4687b2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사 내용과 다르게 섹터를 잘못 분류하는 경우</li></ul><ul id="3928d60c-4fb1-80a8-9abd-f6cc01adce0b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사에 없는 내용을 인용문처럼 꾸며서 제시하는 경우</li></ul><p id="3928d60c-4fb1-8023-98da-f269aac3c828" class="" dir="auto">반대로, 아래 경우는 환각으로 보지 않는다.</p><ul id="3928d60c-4fb1-807e-98b5-d13789dd1c83" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사 본문에 근거해 요약하거나 인사이트를 정리한 경우</li></ul><ul id="3928d60c-4fb1-80fd-aa39-de6c106060fd" class="bulleted-list" dir="auto"><li style="list-style-type:disc">불확실한 상황에서 “확인 필요”, “본문 제공 필요”라고 답한 경우</li></ul><ul id="3928d60c-4fb1-809c-9122-d12855e8a899" class="bulleted-list" dir="auto"><li style="list-style-type:disc">창의적 표현이더라도 사실 주장과 명확히 구분한 경우</li></ul><p id="3928d60c-4fb1-8040-9e80-c9a6a23b6f33" class="" dir="auto">정답 판정의 기준은 외부 세계의 실제 사실이 아니라, 입력으로 제공된 기사 본문과 과업 규정이다. 즉, 모델은 기사 원문에 포함된 정보만 바탕으로 답해야 한다.</p><p id="3928d60c-4fb1-807d-9b9e-cbc16886b848" class="" dir="auto">
+</p><p id="3928d60c-4fb1-804e-8fcd-e3cb62ffa407" class="" dir="auto">2) 검증 원칙</p><p id="3928d60c-4fb1-80e2-84f7-fb3731b66c05" class="" dir="auto">환각 여부를 판단하기 위한 원칙은 다음과 같다.</p><ol type="1" id="3928d60c-4fb1-8057-afa1-fd62924147eb" class="numbered-list" start="1" dir="auto"><li>기사 원문 우선 원칙: 수치, 날짜, 발언, 지역명, 기관명은 기사 본문과 일치해야 한다.</li></ol><ol type="1" id="3928d60c-4fb1-80d2-bfa7-e1e507b0bb85" class="numbered-list" start="2" dir="auto"><li>사실과 해석의 분리: 기사에 있는 사실과, 그 사실에서 도출한 해석은 구분해서 제시해야 한다.</li></ol><ol type="1" id="3928d60c-4fb1-80c4-a9a4-c55b4488b3c1" class="numbered-list" start="3" dir="auto"><li>불확실성 명시 원칙: 입력 정보가 부족하면 임의 추정하지 않고, 확인이 필요하다고 밝혀야 한다.</li></ol><ol type="1" id="3928d60c-4fb1-801c-9d7c-c2a6932e234a" class="numbered-list" start="4" dir="auto"><li>모호한 입력 대응 원칙: 링크만 주어진 경우 기사 내용을 본 것처럼 답하지 말고, 본문/제목/날짜 제공을 요청해야 한다.</li></ol><p id="3928d60c-4fb1-8059-bc9e-d2bbc1553261" class="" dir="auto">
+</p><p id="3928d60c-4fb1-8014-bdc3-ce35d4676d8b" class="" dir="auto">3) 사실 기반 검증 질문</p><p id="3928d60c-4fb1-8096-b61d-dfe188af2e69" class="" dir="auto">아래 검증 질문은 사용자가 제공한 실제 기사 3건과 과업 규정을 바탕으로 구성하였다.</p><table id="3928d60c-4fb1-80e0-87d7-dd2c0f42cdd0" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3928d60c-4fb1-805f-8436-ff503dfde018" dir="ltr"><th id="OEvG" class="simple-table-header-color simple-table-header" style="width:47px">번호</th><th id="veqY" class="simple-table-header-color simple-table-header" style="width:145px">검증 질문</th><th id="Pmcw" class="simple-table-header-color simple-table-header">기대 정답 또는 정답 판정 기준</th><th id="lRNX" class="simple-table-header-color simple-table-header">허용 오차</th><th id="c@DC" class="simple-table-header-color simple-table-header">참고 근거</th></tr></thead><tbody><tr id="3928d60c-4fb1-8074-8f19-dcdd6f7a762a" dir="ltr"><td id="OEvG" class="" style="width:47px">1</td><td id="veqY" class="" style="width:145px">이번 주 서울 아파트 매매가격 상승률은 얼마이며, 전주와 비교해 어떻게 달라졌는가?</td><td id="Pmcw" class=""><strong>이번 주 0.27%, 전주 0.30%이며 상승률이 소폭 둔화했다</strong>고 답해야 한다.</td><td id="lRNX" class="">숫자 표기는 <code>0.27</code>/<code>0.27%</code>, <code>0.30</code>/<code>0.3%</code> 모두 허용</td><td id="c@DC" class="">한국경제, 「서울 집값 상승률 소폭둔화…&#x27;반도체벨트&#x27; 강세 여전」 기사 본문</td></tr><tr id="3928d60c-4fb1-8045-81e2-d7f080eca6ed" dir="ltr"><td id="OEvG" class="" style="width:47px">2</td><td id="veqY" class="" style="width:145px">이번 주 서울에서 아파트 가격이 가장 많이 오른 곳은 어디인가?</td><td id="Pmcw" class="">**도봉구(0.37%)**라고 답해야 한다. 최소한 지역명 <strong>도봉구</strong>는 정확해야 한다.</td><td id="lRNX" class="">없음</td><td id="c@DC" class="">같은 기사 본문</td></tr><tr id="3928d60c-4fb1-8073-86df-f2c0a764ba0c" dir="ltr"><td id="OEvG" class="" style="width:47px">3</td><td id="veqY" class="" style="width:145px">기사에 따르면 서울 전셋값은 어떤 흐름을 보였는가?</td><td id="Pmcw" class=""><strong>이번 주 0.30% 상승했고, 4주 연속 0.3%대 상승률을 기록했다</strong>고 답해야 한다.</td><td id="lRNX" class=""><code>0.30%</code>와 <code>0.3%</code> 표현 차이는 허용</td><td id="c@DC" class="">같은 기사 본문</td></tr><tr id="3928d60c-4fb1-80ed-b404-fc743b387cb8" dir="ltr"><td id="OEvG" class="" style="width:47px">4</td><td id="veqY" class="" style="width:145px">케빈 워시의 발언에서 확인되는 Fed의 핵심 입장은 무엇인가?</td><td id="Pmcw" class=""><strong>Fed의 독립성에는 변화가 없고, 2% 물가 목표를 유지하겠다는 입장</strong>이라고 답해야 한다. 두 요소가 모두 포함되면 정답으로 본다.</td><td id="lRNX" class="">표현 차이 허용, 의미 동일해야 함</td><td id="c@DC" class="">한국경제, 「트럼프 압박에 선 그은 워시…&quot;Fed 독립성 변화 없다&quot;」 기사 본문</td></tr><tr id="3928d60c-4fb1-80f2-8236-d3ef93ed2bc1" dir="ltr"><td id="OEvG" class="" style="width:47px">5</td><td id="veqY" class="" style="width:145px">워시는 다음 달 회의의 금리 방향에 대해 확정적으로 답했는가?</td><td id="Pmcw" class=""><strong>아니며, 금리 방향에 대한 답변을 유보했다</strong>고 답해야 한다.</td><td id="lRNX" class="">없음</td><td id="c@DC" class="">같은 기사 본문</td></tr><tr id="3928d60c-4fb1-80d2-b46e-d8082edbf3d5" dir="ltr"><td id="OEvG" class="" style="width:47px">6</td><td id="veqY" class="" style="width:145px">2026년 4월 건설공사비지수는 얼마이며 전월 대비 얼마나 상승했는가?</td><td id="Pmcw" class=""><strong>136.88, 전월 대비 1.75포인트 상승</strong>이라고 답해야 한다.</td><td id="lRNX" class="">수치 ±0.01 이내 허용</td><td id="c@DC" class="">매일경제, 「“유가 진정됐는데 분양가 인상은 이제 시작?”…공사비 4년만에 최대 상승」 기사 본문</td></tr><tr id="3928d60c-4fb1-8054-bf0c-f938cbdbadcf" dir="ltr"><td id="OEvG" class="" style="width:47px">7</td><td id="veqY" class="" style="width:145px">기사에서 가장 큰 폭으로 오른 건설 자재 가격은 무엇이며 상승률은 얼마인가?</td><td id="Pmcw" class=""><strong>아스콘·아스팔트 가격이 전월 대비 28.83% 급등</strong>했다고 답해야 한다.</td><td id="lRNX" class="">수치 ±0.01 이내 허용</td><td id="c@DC" class="">같은 기사 본문</td></tr></tbody></table><p id="3928d60c-4fb1-803c-adc4-ee62380e4020" class="" dir="auto">4) 모호한 입력 검증 질문</p><p id="3928d60c-4fb1-8036-bb75-dd952eb57e82" class="" dir="auto">사실 기반 질문 외에, 본 과제의 핵심 위험 요소인 모호한 입력 처리도 별도로 검증한다.</p><table id="3928d60c-4fb1-80b2-a527-f838f2bb24d2" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3928d60c-4fb1-80e8-b816-db8edd7c1664" dir="ltr"><th id="bg@i" class="simple-table-header-color simple-table-header">번호</th><th id="bYF:" class="simple-table-header-color simple-table-header">검증 질문</th><th id="?ZD?" class="simple-table-header-color simple-table-header">기대 정답 또는 정답 판정 기준</th><th id="}jsJ" class="simple-table-header-color simple-table-header">허용 오차</th><th id="bf~l" class="simple-table-header-color simple-table-header">참고 근거</th></tr></thead><tbody><tr id="3928d60c-4fb1-8066-bc09-e025f7e131d1" dir="ltr"><td id="bg@i" class="">8</td><td id="bYF:" class="">사용자가 “이 기사 분석해줘”와 함께 링크만 제공한 경우, 모델은 어떻게 답해야 하는가?</td><td id="?ZD?" class=""><strong>기사 본문을 직접 확인할 수 없으므로 본문, 제목, 날짜, 출처 중 일부를 추가로 요청해야 한다.</strong> 임의 요약이나 섹터 분류를 하면 안 된다.</td><td id="}jsJ" class="">없음</td><td id="bf~l" class="">과업 규정 및 few-shot 모호한 입력 예시</td></tr></tbody></table><p id="3928d60c-4fb1-80c9-9d90-eda26f43a604" class="" dir="auto">5) 문항별 합격 기준</p><p id="3928d60c-4fb1-8091-95c3-ff77adcbdf0f" class="" dir="auto">각 검증 문항은 아래 두 조건 중 하나를 만족하면 Pass로 판정한다.</p><ul id="3928d60c-4fb1-807c-bf8d-fe2451331055" class="bulleted-list" dir="auto"><li style="list-style-type:disc">(A) 정답을 맞히고, 기사 본문 근거를 간단히 제시한다.</li></ul><ul id="3928d60c-4fb1-801d-9c1d-e6d76b7c0485" class="bulleted-list" dir="auto"><li style="list-style-type:disc">(B) 정보가 부족한 경우 “모른다/확인 필요”를 명시하고, 어디서 무엇을 확인해야 하는지 제안한다.</li></ul><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-80d6-b1a4-cabf63c80ea2" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-806e-9fcd-f7f42365ad14" class="" dir="auto">예시:</p><ul id="3928d60c-4fb1-800a-b877-e597e2f57c93" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Pass 예시<p id="3928d60c-4fb1-80ee-a9fd-fa665adb0256" class="" dir="auto">“서울 아파트 매매가격은 이번 주 0.27% 올라 전주 0.30%보다 상승률이 둔화했습니다. 이는 기사 본문에 직접 제시된 수치입니다.”</p></li></ul><ul id="3928d60c-4fb1-8083-b324-c34df5137d55" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Pass 예시(모호한 입력)<p id="3928d60c-4fb1-8003-a11a-dc2608fb30de" class="" dir="auto">“현재는 링크만 있어 기사 본문을 확인할 수 없습니다. 정확한 분석을 위해 기사 제목이나 본문 일부를 보내주시면 섹터, 요약, 인사이트 형식으로 정리하겠습니다.”</p></li></ul></div></aside><p id="3928d60c-4fb1-80a0-8392-f744ea107421" class="" dir="auto">6) Fail 기준</p><p id="3928d60c-4fb1-8003-a5d8-d7365ef0c325" class="" dir="auto">아래 항목 중 하나라도 해당하면 해당 문항은 Fail로 판정한다.</p><ol type="1" id="3928d60c-4fb1-803c-8636-ecec871e7726" class="numbered-list" start="1" dir="auto"><li>틀린 사실을 단정적으로 답한 경우<ul id="3928d60c-4fb1-80e4-b90b-f3052927910c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">예: “서울 아파트 상승률은 0.35%였다.”</li></ul><ul id="3928d60c-4fb1-801c-9932-deacfa401777" class="bulleted-list" dir="auto"><li style="list-style-type:disc">예: “워시는 금리 인하를 확정적으로 시사했다.”</li></ul></li></ol><ol type="1" id="3928d60c-4fb1-809c-9a1d-f3f191caa63e" class="numbered-list" start="2" dir="auto"><li>기사에 없는 내용을 임의로 추가한 경우<ul id="3928d60c-4fb1-8074-97b8-cbc661df3046" class="bulleted-list" dir="auto"><li style="list-style-type:disc">예: “정부가 이미 보유세 인상안을 확정했다.”</li></ul><ul id="3928d60c-4fb1-80db-a833-cc958d6c963c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">예: “건설사들이 다음 달 분양가를 평균 20% 인상할 예정이다.”</li></ul></li></ol><ol type="1" id="3928d60c-4fb1-8096-a775-f7b5294fb777" class="numbered-list" start="3" dir="auto"><li>모호한 입력인데도 확인 없이 사실을 만들어 답한 경우<ul id="3928d60c-4fb1-801b-a141-fb6f333b110a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">예: 링크만 보고 “이 기사는 부동산 규제 완화에 대한 기사입니다.”라고 단정</li></ul></li></ol><ol type="1" id="3928d60c-4fb1-80f7-a650-d8e1edb97a7f" class="numbered-list" start="4" dir="auto"><li>섹터를 근거 없이 잘못 분류한 경우<ul id="3928d60c-4fb1-809c-a8ac-c48d11340182" class="bulleted-list" dir="auto"><li style="list-style-type:disc">예: Fed 관련 기사를 “증권”으로만 분류하고 금융정책 기사라는 점을 놓치는 경우</li></ul><ul id="3928d60c-4fb1-8099-a177-f36bc6c720d0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">예: 공사비·분양가 기사를 “국제”로 분류하는 경우</li></ul><p id="3928d60c-4fb1-80cb-8e7f-c30dc6bbbf29" class="" dir="auto">
+</p></li></ol><p id="3928d60c-4fb1-80e5-99e6-c9e9ef21cae3" class="" dir="auto">7) 전체 평가 기준</p><p id="3928d60c-4fb1-8042-994f-e8ec48007a1c" class="" dir="auto"> 전체 환각 검증은 총 8개 문항으로 수행하며,  8개 중 7개 이상 Pass해야 하며, 중대한 환각(Critical Fail)이 1회도 없어야 한다. 여기서 중대한 환각은 기사에 없는 수치를 만들어 단정하는 경우, 링크만 보고 기사 내용을 본 것처럼 분석하는 경우 또는 금리, 정책, 가격 흐름처럼 민감한 경제 정보를 반대로 잘못 답하는 경우를 말한다.</p><p id="3928d60c-4fb1-8028-bb50-c6a63279f482" class="" dir="auto">
+</p><p id="3928d60c-4fb1-807a-b8b5-e837ab6429c7" class="" dir="auto">8) 기대 효과</p><p id="3928d60c-4fb1-8014-8a72-c682d9af50e4" class="" dir="auto">이와 같은 환각 검증 설계를 통해 모델이 (1) 기사 원문에 근거한 사실 중심 답변을 하도록 유도하고, (2) 정보가 부족할 때는 임의 추정을 멈추고 확인 절차를 제안하며, (3) 경제 뉴스 분석에서 특히 중요한 수치·정책·시장 흐름 관련 오류를 줄일 수 있다.</p><hr id="3928d60c-4fb1-8096-b30c-f18ae04cd987" dir="auto"/><h2 id="3928d60c-4fb1-807d-9d14-f8bdbfdd82fa" style="display:inline-block" dir="auto">2-7 개선 이력(v1→v2)</h2><p id="3928d60c-4fb1-802c-bfd4-fe50efce3b19" class="" dir="auto">1) v1 프롬프트</p><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8008-b489-d18962649698" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-80ba-88ac-eb76d2a66362" class="" dir="auto">위와 동일</p></div></aside><p id="3928d60c-4fb1-80e1-9769-d8ea62fbca14" class="" dir="auto">
+</p><p id="3928d60c-4fb1-8080-8230-f66f0c174c24" class="" dir="auto">2) v1의 한계</p><p id="3928d60c-4fb1-803f-8716-f743f50c6b63" class="" dir="auto">v1은 기본적인 뉴스 구조화에는 성공했지만, 실제 모델 테스트 결과 다음과 같은 한계가 확인되었다.</p><p id="3928d60c-4fb1-8007-af1c-ff6b368b3577" class="" dir="auto">(v1의 한계는 <mark class="highlight-gray_background" data-notion-highlight="gray_background">1-1. LLM 모델 비교·선정 보고서</mark>에서 확인할 수 있음.) </p><table id="3928d60c-4fb1-809d-a5a0-cdec067ddf49" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3928d60c-4fb1-8012-853d-c1ae411bf566" dir="ltr"><th id="gyKS" class="simple-table-header-color simple-table-header">번호</th><th id="KCES" class="simple-table-header-color simple-table-header">문제점</th><th id="gI\`" class="simple-table-header-color simple-table-header">관찰 내용</th><th id="n[fC" class="simple-table-header-color simple-table-header">시사점</th></tr></thead><tbody><tr id="3928d60c-4fb1-8042-91b8-c3d4654d0967" dir="ltr"><td id="gyKS" class="">①</td><td id="KCES" class="">출력 형식 통제가 약함</td><td id="gI\`" class="">GPT는 비교적 깔끔했지만, Claude는 입력/수정 시각이나 참고 문구를 추가했고, Gemini는 응원 문구와 안내 멘트를 덧붙였다.</td><td id="n[fC" class="">“7개 항목만 출력” 조건을 더 강하게 명시할 필요가 있다.</td></tr><tr id="3928d60c-4fb1-8045-9038-d349d2246940" dir="ltr"><td id="gyKS" class="">②</td><td id="KCES" class="">불필요한 정보가 포함될 수 있음</td><td id="gI\`" class="">과업 목적은 경제 기사 구조화 결과물 생산인데, 일부 모델은 설명형 말투, 튜터형 멘트, 참고 문구를 추가했다.</td><td id="n[fC" class="">실무형 산출물에서는 불필요한 문장을 차단하는 지시가 필요하다.</td></tr><tr id="3928d60c-4fb1-80c7-8630-d976d707671f" dir="ltr"><td id="gyKS" class="">③</td><td id="KCES" class="">날짜 표기 기준이 모호함</td><td id="gI\`" class="">기사 발행일만 필요함에도 일부 모델이 입력 시각, 수정 시각 등을 함께 포함했다.</td><td id="n[fC" class="">날짜 항목은 발행일만 <code>YYYY.MM.DD</code> 형식으로 출력하도록 명확히 제한해야 한다.</td></tr><tr id="3928d60c-4fb1-8087-a3d7-fd97af20ce71" dir="ltr"><td id="gyKS" class="">④</td><td id="KCES" class="">요약과 인사이트의 경계가 불명확함</td><td id="gI\`" class="">어떤 모델은 인사이트가 요약 반복에 그쳤고, 어떤 모델은 기사 바깥의 해석을 확장했다.</td><td id="n[fC" class="">“요약=기사 사실”, “인사이트=기사 기반 의미 해석” 기준을 분리해 제시해야 한다.</td></tr><tr id="3928d60c-4fb1-8024-9ba1-e628fcd0c774" dir="ltr"><td id="gyKS" class="">⑤</td><td id="KCES" class="">입력 요건이 느슨함</td><td id="gI\`" class="">링크만 입력되면 기사 본문 확인이 어려워 분석이 불가능한 경우가 생긴다.</td><td id="n[fC" class="">제목, 발행일, 본문, 출처를 포함한 입력 형식을 필수로 요구해야 한다</td></tr></tbody></table><p id="3928d60c-4fb1-80e2-b024-fd796d5e29a2" class="" dir="auto">3) v2 프롬프트</p><p id="3928d60c-4fb1-8084-b3a2-fd3b6a4a2966" class="" dir="auto">v2는 단계적 접근을 유도하고, 정보 부족 시 확인 질문을 하도록 개선한 프롬프트이다. </p><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8061-b9d2-dadccdbe60a7" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-806a-bc66-dc4a4b19612e" class="" dir="auto">[페르소나]<br/>당신은 &quot;경제 뉴스 큐레이터&quot;이다.<br/><br/>[목표]<br/>금융 공기업 취업 준비생과 일반 독자가 빠르게 이해할 수 있도록 경제 기사의 핵심 사실과 의미를 간결하게 정리한다. 결과물은 바로 제출하거나 저장할 수 있는 실무형 요약이어야 한다.<br/><br/>[입력 규칙]<br/>- 기사 본문이 제공된 경우에만 분석한다.<br/>- 링크만 제공된 경우에는 분석하지 말고, &quot;기사 본문을 추가로 입력해 주세요.&quot;라는 요청 문장만 출력한다.<br/><br/>[출력 규칙]<br/>- 반드시 아래 7개 항목의 템플릿만 출력한다.<br/>- 인사말, 안내문, 응원 문구, 참고 문구, 이모지, 주석, 서론, 결론, 자기평가는 절대 출력하지 않는다.<br/><br/>[섹터 분류 규칙]<br/>- 반드시 아래 5개 섹터 중 가장 핵심적인 주제 1개만 선택한다.<br/>1. 국제: 해외 국가, 국제기구, 글로벌 공급망, 전쟁, 무역 갈등, 해외 금리/환율<br/>2. 국내: 한국 정부 정책, 국내 산업, 국내 경기, 고용, 물가<br/>3. 금융: 금리, 환율, 은행, 대출, 통화정책, 채권<br/>4. 증권: 주식시장, 코스피/코스닥, 상장사 실적, IPO, 반도체주 등<br/>5. 부동산: 집값, 전세, 월세, 분양, 재건축, PF, 부동산 정책<br/><br/>[금지 사항 및 안전장치]<br/>- 기사에 없는 사실, 수치, 정보 추가 절대 금지 (근거가 불충분하면 임의 보완 금지)<br/>- 투자 조언, 매수·매도 추천, 가격 전망 단정 금지<br/>- 감정적 표현, 과장된 표현, 정치적 편향 표현 금지<br/>- 날짜, 출처, 수치 등 정확성이 불확실한 정보는 단정하지 말고 &quot;확인 필요&quot;로 표시<br/><br/>[출력 템플릿 및 세부 작성 규칙]<br/>[1. 섹터]<br/>- 5개 섹터(국제/국내/금융/증권/부동산) 중 1개만 작성<br/><br/>[2. 제목]<br/>- 기사 제목 그대로 작성<br/><br/>[3. 날짜]<br/>- 기사 발행일만 YYYY.MM.DD 형식으로 작성 (불명확 시 &quot;확인 필요&quot; 작성)<br/>- 입력/수정/업로드 시간 제외<br/><br/>[4. 요약 3줄]<br/>- 기사에 직접 나온 사실과 핵심 수치(1~3개) 중심으로 작성<br/>- 각 줄은 1문장으로 간결하고 단정적인 보고서형 문체로 작성<br/>1.<br/>2.<br/>3.<br/>[5. 인사이트 3줄]<br/>- 기사 내용을 바탕으로 정책, 시장, 취업/면접 관점의 의미를 해석<br/>- 요약 문장 반복 금지, 기사에 없는 내용으로 과도한 비약 및 단정 금지<br/>1.<br/>2.<br/>3<br/>[6. 이 뉴스가 중요한 이유]<br/>- 독자가 이 이슈를 왜 알아야 하는지 2문장 이내로 작성<br/><br/>[7. 출처]<br/>- 언론사명 / 기자명 / 링크 형식으로 작성 (기자명이 없으면 언론사명 / 링크)<br/>- 입력된 정보 외 임의 출처 추가 금지 (불명확 시 &quot;확인 필요&quot; 작성)<br/><br/>[우선순위]<br/>정확성 &gt; 템플릿 준수 &gt; 명확성</p></div></aside><p id="3928d60c-4fb1-8052-a519-c90985d6ef8b" class="" dir="auto">
+</p><p id="3928d60c-4fb1-80de-a8f6-c558d2fce262" class="" dir="auto">4) v1에서 v2로의 주요 개선점</p><p id="3928d60c-4fb1-805b-b26d-edae90da36ec" class="" dir="auto">v1과 v2의 차이는 다음과 같다.</p><table id="3928d60c-4fb1-80b9-8f16-d9d8fe4247b6" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3928d60c-4fb1-8087-8a8a-c75b53fc0ba0" dir="ltr"><th id="kocQ" class="simple-table-header-color simple-table-header">개선 항목</th><th id="W[hP" class="simple-table-header-color simple-table-header">v1</th><th id="LN=?" class="simple-table-header-color simple-table-header">v2</th></tr></thead><tbody><tr id="3928d60c-4fb1-8098-8ebb-c80d68ad94da" dir="ltr"><td id="kocQ" class="">입력 방식</td><td id="W[hP" class="">링크 또는 본문 기반으로 분석 가능하도록 설계</td><td id="LN=?" class="">기사 본문이 있을 때만 분석하도록 제한</td></tr><tr id="3928d60c-4fb1-809f-bac1-e2e5bb4637a6" dir="ltr"><td id="kocQ" class="">출력 형식 통제</td><td id="W[hP" class="">7개 항목 형식은 제시했으나 부가 문구가 붙을 수 있음</td><td id="LN=?" class="">반드시 7개 항목만 출력하며, 인사말·응원 문구·참고 문구·주석 등을 금지</td></tr><tr id="3928d60c-4fb1-8016-b63e-e1459be45914" dir="ltr"><td id="kocQ" class="">날짜 표기 규칙</td><td id="W[hP" class="">기사 날짜 외에 입력 시각, 수정 시각 등이 포함될 수 있음</td><td id="LN=?" class="">기사 발행일만 <code>YYYY.MM.DD</code> 형식으로 표기</td></tr><tr id="3928d60c-4fb1-80c3-b640-e9f40f8526a2" dir="ltr"><td id="kocQ" class="">요약과 인사이트 구분</td><td id="W[hP" class="">요약과 인사이트의 경계가 다소 모호함</td><td id="LN=?" class="">요약은 기사 속 사실 정리, 인사이트는 의미 해석으로 명확히 분리</td></tr><tr id="3928d60c-4fb1-809a-93c4-e166850be816" dir="ltr"><td id="kocQ" class="">수치 반영 기준</td><td id="W[hP" class="">모델에 따라 수치가 생략되거나 과하게 재구성될 수 있음</td><td id="LN=?" class="">기사 내 핵심 수치만 반영하고, 추론·합산은 금지</td></tr><tr id="3928d60c-4fb1-807d-93e3-e1501355be4d" dir="ltr"><td id="kocQ" class="">문체 및 표현 방식</td><td id="W[hP" class="">설명형·친절한 말투가 허용되어 부가 표현이 들어갈 수 있음</td><td id="LN=?" class="">실무형 간결 문체를 강화해 바로 제출 가능한 결과물 중심으로 개선</td></tr></tbody></table><p id="3928d60c-4fb1-8051-a34b-e6ba5b2e73d7" class="" dir="auto">5) 개선 의도</p><p id="3928d60c-4fb1-8084-8fce-e7d640057c83" class="" dir="auto"> v2의 핵심 개선 의도는 “잘 설명하는 모델”을 만드는 데 있지 않고, “바로 사용할 수 있는 형태의 출력”을 안정적으로 생성하도록 하는 데 있다. 이번 과업은 단순한 질의응답이 아니라, 경제 기사 내용을 일정한 형식으로 반복 정리하여 축적·비교·활용하는 작업이라는 점에서 일반적인 대화형 응답과 성격이 다르다. 따라서 중요한 것은 답변의 친절함이나 설명의 풍부함보다, 매번 동일한 구조와 기준에 따라 결과물을 산출하는 능력이다.</p><p id="3928d60c-4fb1-8099-bd15-d25a5672f338" class="" dir="auto"> 이를 위해 v2는 첫째, 출력 일관성 확보에 초점을 맞추었다. 모델마다 말투나 응답 습관이 다르더라도, 최종 결과물은 항상 동일한 형식으로 제시되어야 이후 비교와 누적 활용이 가능하다. 둘째, 불필요한 정보 제거를 주요 개선 방향으로 삼았다. 실무형 산출물에서는 응원 문구, 과도한 안내 문장, 참고 메모와 같은 요소가 오히려 결과물의 활용성을 떨어뜨릴 수 있으므로, 이러한 비핵심 표현을 최소화할 필요가 있다. 셋째, 기사 기반 사실성과 활용성 강화를 목표로 하였다. 핵심 수치와 맥락은 충실히 반영하되, 기사 바깥으로 지나치게 확장된 해석은 줄여 실제 기사 정리 및 학습 자료로서의 신뢰도를 높이고자 하였다. 즉, v2는 친절한 답변보다 통제된 결과물 생산에 초점을 맞춘 개선안이라고 할 수 있다.</p><p id="3928d60c-4fb1-8017-918e-c13831e80b89" class="" dir="auto">
+</p><p id="3928d60c-4fb1-80f5-9286-c0925c04a61a" class="" dir="auto">6) 기대 효과</p><p id="3928d60c-4fb1-8089-ae0f-ccd553bb7b6e" class="" dir="auto"> v2를 적용할 경우 가장 먼저 기대할 수 있는 효과는 모델 간 결과 편차의 축소이다. 동일한 기사와 동일한 프롬프트를 입력하더라도 모델마다 출력 형식이나 부가 문구가 달라지는 문제가 있었는데, 형식 통제를 강화함으로써 이러한 차이를 줄일 수 있다. 이는 GPT, Claude, Gemini와 같은 서로 다른 모델 간 비교를 보다 공정하고 명확하게 만드는 데 도움이 된다.</p><p id="3928d60c-4fb1-80bc-8656-d3e46b19f87a" class="" dir="auto"> 또한 실무 활용성도 높아질 것으로 기대된다. 결과물이 일정한 형식으로 정리되면 별도의 추가 편집 없이 바로 저장하거나 제출할 수 있고, 학습 노트나 자료 축적용 문서로도 손쉽게 활용할 수 있다. 이와 함께 응원 문구, 안내 멘트, 수정 시각과 같은 비핵심 요소를 사전에 차단함으로써 결과물의 밀도와 가독성을 높일 수 있다.</p><p id="3928d60c-4fb1-805d-b2f9-d5c38459c59d" class="" dir="auto"> 인사이트 품질의 안정화 역시 중요한 기대 효과 중 하나이다. 요약과 인사이트의 역할을 보다 명확히 구분하면, 단순히 기사 내용을 반복하는 수준을 넘어 기사 의미를 더 분명하게 드러내는 정리가 가능해진다. 나아가 평가 정확도도 향상될 수 있다. 기존에는 모델의 실제 성능보다 말투나 표현 방식의 차이로 인해 인상이 달라질 수 있었지만, 형식과 출력 기준을 통일하면 정확성, 형식 준수, 인사이트 도출 능력 등 본질적인 성능 요소를 중심으로 비교할 수 있게 된다.</p><p id="3928d60c-4fb1-80cb-93cf-c6d34418277b" class="" dir="auto"> 마지막으로, 형식이 일정한 결과물이 반복적으로 축적되면 이후 검색, 분석, 복습이 훨씬 용이해진다. 이는 단발성 요약을 넘어 경제 기사 데이터를 체계적으로 정리하고 활용하는 데 유리하며, 장기적으로는 학습 자료 구축과 비교 분석의 기반이 될 수 있다.</p><p id="3928d60c-4fb1-80b6-a6c5-eed5820a91da" class="" dir="auto">
+</p><p id="3928d60c-4fb1-800a-8170-ce1f4f8659a4" class="" dir="auto">7) 최종 정리</p><p id="3928d60c-4fb1-80c7-bab4-fbccae7d07cf" class="" dir="auto"> v1 프롬프트는 경제 뉴스 이슈 분석의 기본 구조를 잘 제시했지만, 입력 조건과 출력 형식 통제가 충분히 엄격하지 않아 모델별로 불필요한 정보가 포함되는 문제가 있었다. 특히 Claude는 수정 시각 등 과업상 필요 없는 요소를 덧붙였고, Gemini는 지나치게 친절한 안내와 응원 문구를 포함해 실무형 산출물로서는 다소 불리했다. </p><p id="3928d60c-4fb1-8063-8d8d-e85c2231ca94" class="" dir="auto"> 이에 따라 v2에서는 기사 본문 필수, 7개 항목 외 출력 금지, 발행일만 표기, 요약과 인사이트의 역할 분리, 핵심 수치 반영 및 과해석 금지 규칙을 추가해 출력의 일관성과 실무 활용성을 높이도록 개선하였다. 결론적으로 v2는 “경제 뉴스 내용을 잘 설명하는 프롬프트”에서 “경제 뉴스 결과물을 바로 사용할 수 있게 만드는 프롬프트”로 발전한 버전이라고 볼 수 있다.</p><hr id="3928d60c-4fb1-80c4-a96f-c7c90f2278ce" dir="auto"/><h2 id="3928d60c-4fb1-8070-b38a-c24e0175d4ac" style="display:inline-block" dir="auto">2-8. 참고 사항</h2><ul id="3928d60c-4fb1-8021-a928-e846b16b87cb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">주 사용 모델명: GPT-5.4</li></ul><ul id="3928d60c-4fb1-80c1-a2b3-fec417732019" class="bulleted-list" dir="auto"><li style="list-style-type:disc">요금제: 유료(x1)</li></ul><ul id="3928d60c-4fb1-8069-9953-c979474daa91" class="bulleted-list" dir="auto"><li style="list-style-type:disc">사용 채널: 웹</li></ul><ul id="3928d60c-4fb1-80c6-a036-dc262401c020" class="bulleted-list" dir="auto"><li style="list-style-type:disc">사용 날짜: 2026-07-02 ~ 03</li></ul><ul id="3928d60c-4fb1-80ec-bd57-f59d82fd5e4d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">주요 설정: 사용자 지정 없음. 기본값 사용</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

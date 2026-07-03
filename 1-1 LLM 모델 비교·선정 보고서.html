@@ -1,0 +1,771 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>1-1. LLM 모델 비교·선정 보고서</title><meta name="data-notion-page-icon" content="📁"/><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%93%81%3C%2Ftext%3E%3C%2Fsvg%3E"/><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure,
+aside,
+details {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="3928d60c-4fb1-80af-8255-d841c294a99e" class="page sans" data-notion-page-icon="📁"><header><div class="page-header-icon undefined"><span class="icon" data-emoji="📁"></span></div><h1 class="page-title" dir="auto"><strong>1-1. LLM 모델 비교·선정 보고서</strong></h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-relation"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/arrow-northeast_gray.svg" style="width:14px;height:14px;display:block"/></span>과제</th><td><a href="https://app.notion.com/p/1-3928d60c4fb1800ebbf2e3cd00fe4162?pvs=21" data-notion-page-id="3928d60c-4fb1-800e-bbf2-e3cd00fe4162" data-notion-space-id="1aa8d60c-4fb1-8108-bb6b-00036e7d4770">1차 미션</a></td></tr><tr class="property-row property-row-date"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/calendar_gray.svg" style="width:14px;height:14px;display:block"/></span>날짜</th><td><time datetime="2026-07-03">2026년 7월 3일</time></td></tr><tr class="property-row property-row-status"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/burst_gray.svg" style="width:14px;height:14px;display:block"/></span>상태</th><td><span class="status-value select-value-color-blue"><div class="status-dot status-dot-color-blue"></div>진행 중</span></td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/arrow-circle-down_gray.svg" style="width:14px;height:14px;display:block"/></span>유형</th><td><span class="selected-value select-value-color-green">보고서</span></td></tr></tbody></table></header><div class="page-body"><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8094-9070-eadc6c5994bf" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-804e-8d89-e4fb653e2b48" class="" dir="auto">동일한 업무 과업 프롬프트(테스트 질문/케이스 포함)를 3종 이상의 모델에 입력하고, 모델별 결과 비교표와 최종 선정 결론(근거 포함)을 정리한 문서</p></div></aside><hr id="3928d60c-4fb1-80be-9b32-c88ea4c81c7c" dir="auto"/><h2 id="3928d60c-4fb1-8093-97f4-d33f21b328fa" style="display:inline-block" dir="auto">1-1 모델 선정 및 비교 목적</h2><p id="3928d60c-4fb1-801d-b293-eee80fd610d9" class="" dir="auto">-비교 대상 모델명</p><table id="3928d60c-4fb1-805c-85a1-f557ae6e232d" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3928d60c-4fb1-8035-ac4b-e4c9f980a4c2" dir="ltr"><th id="Hh^U" class="simple-table-header-color simple-table-header">모델명</th><th id="u_ai" class="simple-table-header-color simple-table-header">개발사</th><th id="SJCm" class="simple-table-header-color simple-table-header">사용 환경</th></tr></thead><tbody><tr id="3928d60c-4fb1-800c-95be-f246fc5be94a" dir="ltr"><td id="Hh^U" class="">GPT-5.5</td><td id="u_ai" class="">OpenAI</td><td id="SJCm" class="">웹(ChatGPT)</td></tr><tr id="3928d60c-4fb1-8062-882d-d1b11159064d" dir="ltr"><td id="Hh^U" class="">Claude Opus 4.8</td><td id="u_ai" class="">Anthropic</td><td id="SJCm" class="">웹(Claude.ai)</td></tr><tr id="3928d60c-4fb1-80b6-96e2-fa2586cfd85d" dir="ltr"><td id="Hh^U" class="">Gemini 3.1 Pro</td><td id="u_ai" class="">Google</td><td id="SJCm" class="">웹(Gemini)</td></tr></tbody></table><p id="3928d60c-4fb1-8014-8a55-fd8c8c2d4e1a" class="" dir="auto">-비교 목적</p><p id="3928d60c-4fb1-8005-b988-dae9287da3b2" class="" dir="auto"> 경제뉴스 분석 자동화 프롬프트 패키지를 활용해, 동일한 입력 조건에서 3종의 LLM 모델이 얼마나 다른 결과를 출력하는지 비교·검증한다. 단순 성능 비교가 아닌, &quot;경제뉴스 분석&quot;이라는 특정 업무 과업에 가장 적합한 모델을 선정하는 것이 목적이다.<br/></p><hr id="3928d60c-4fb1-8063-93ad-c67838ab7f0e" dir="auto"/><h2 id="3928d60c-4fb1-8011-8844-e7c7b8e3d489" style="display:inline-block" dir="auto">1-2 사용 환경 및 입력 내용</h2><p id="3928d60c-4fb1-80c0-b5e9-db846b3f3f9d" class="" dir="auto">-사용 환경</p><table id="3928d60c-4fb1-80b4-a231-daceac04ff9a" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3928d60c-4fb1-8078-85ae-fbd421993359" dir="ltr"><th id="erjD" class="simple-table-header-color simple-table-header">모델/서비스</th><th id="f==G" class="simple-table-header-color simple-table-header" style="width:139.921875px">플랫폼</th><th id="hV;z" class="simple-table-header-color simple-table-header">요금제</th><th id="obFY" class="simple-table-header-color simple-table-header">테스트 일시</th><th id="ppNt" class="simple-table-header-color simple-table-header" style="width:263px">입력 방식</th><th id="Goz\" class="simple-table-header-color simple-table-header" style="width:162px">주요 설정</th></tr></thead><tbody><tr id="3928d60c-4fb1-8058-9145-f95716aa0da0" dir="ltr"><td id="erjD" class="">GPT-5.5</td><td id="f==G" class="" style="width:139.921875px">웹 버전</td><td id="hV;z" class="">유료 플랜 기준</td><td id="obFY" class="">2026-07-03</td><td id="ppNt" class="" style="width:263px">동일한 시스템 프롬프트 + 동일한 테스트 기사 텍스트를 순차 입력</td><td id="Goz\" class="" style="width:162px">사용자 지정 없음, 플랫폼 기본값 사용</td></tr><tr id="3928d60c-4fb1-80ee-ad65-e85fac4fcfcf" dir="ltr"><td id="erjD" class="">Claude Opus 4.8</td><td id="f==G" class="" style="width:139.921875px">웹 버전</td><td id="hV;z" class="">유료 플랜 기준</td><td id="obFY" class="">2026-07-03</td><td id="ppNt" class="" style="width:263px">동일한 시스템 프롬프트 + 동일한 테스트 기사 텍스트를 순차 입력</td><td id="Goz\" class="" style="width:162px">사용자 지정 없음, 플랫폼 기본값 사용</td></tr><tr id="3928d60c-4fb1-800c-b354-e9de61f2748e" dir="ltr"><td id="erjD" class="">Gemini 3.1 Pro</td><td id="f==G" class="" style="width:139.921875px">웹 버전</td><td id="hV;z" class="">유료 플랜 기준</td><td id="obFY" class="">2026-07-03</td><td id="ppNt" class="" style="width:263px">동일한 시스템 프롬프트 + 동일한 테스트 기사 텍스트를 순차 입력</td><td id="Goz\" class="" style="width:162px">사용자 지정 없음, 플랫폼 기본값 사용</td></tr></tbody></table><p id="3928d60c-4fb1-8025-a6d2-fbd2c1a30c00" class="" dir="auto">-비교에 사용한 프롬프트</p><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8012-bdda-cc2384164d68" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-80de-91d7-d1bbc4e54136" class="" dir="auto">[페르소나]<br/>당신은 &quot;경제 뉴스 큐레이터&quot;이다.</p><p id="3928d60c-4fb1-804e-b8b1-dba6879c9386" class="" dir="auto">[업무 과업]<br/>경제 뉴스 이슈 분석</p><p id="3928d60c-4fb1-80f7-b27c-d1ef9b0d64a8" class="" dir="auto">[타겟 사용자]<br/>금융 공기업 취준생 및 기본적인 경제 시사 상식을 가진 뉴스 독자</p><p id="3928d60c-4fb1-8044-aeca-edb054360be9" class="" dir="auto">[입력 데이터 형태]<br/>뉴스 링크 또는 기사 본문</p><p id="3928d60c-4fb1-802a-a7eb-c7bbbbb134a4" class="" dir="auto">[목표]<br/>입력된 뉴스 링크 또는 기사 본문을 바탕으로 핵심 내용을 분석하고,<br/>가장 적절한 섹터 1개를 선택하여 지정된 형식으로 출력한다.</p><p id="3928d60c-4fb1-8096-8d6e-e1da16203dd5" class="" dir="auto">[출력 형식 규칙]<br/>반드시 국제/국내/금융/증권/부동산 중 가장 적절한 섹터 1개를 선택하고,<br/>출력은 아래 형식을 따른다.</p><p id="3928d60c-4fb1-805a-9201-ceaf28dabe57" class="" dir="auto">[1. 섹터]<br/>[2. 제목]<br/>[3. 날짜]</p><p id="3928d60c-4fb1-8036-845c-f1462804637b" class="" dir="auto">[4. 요약 3줄]</p><p id="3928d60c-4fb1-8092-bf4d-c7ca20449742" class="" dir="auto">1.</p><p id="3928d60c-4fb1-8051-b6fe-ffef749d97f1" class="" dir="auto">2.</p><p id="3928d60c-4fb1-805d-8f5e-cd8cad4fb6d8" class="" dir="auto">3.</p><p id="3928d60c-4fb1-802c-9616-ca304c9da8df" class="" dir="auto">[5. 인사이트 3줄]</p><p id="3928d60c-4fb1-80b1-81c3-f6518eb6d411" class="" dir="auto">1.</p><p id="3928d60c-4fb1-800c-a434-e746a0322dc7" class="" dir="auto">2.</p><p id="3928d60c-4fb1-80b6-bf9d-e4bf24e3a60c" class="" dir="auto">3.</p><p id="3928d60c-4fb1-8083-bd90-eedc126078d1" class="" dir="auto">[6. 이 뉴스가 중요한 이유]</p><p id="3928d60c-4fb1-8001-8455-e458da29ffeb" class="" dir="auto">[7. 출처]</p><p id="3928d60c-4fb1-80b4-9634-e9c563f369d6" class="" dir="auto">[표현 톤 규칙]<br/>취업 준비용 시사 정리 노트처럼 간결하고 명확하게 작성한다.<br/>보고서형 문체를 유지하되 지나치게 딱딱하지 않게 쓴다.<br/>핵심만 정리하고 불필요한 배경 설명은 최소화한다.</p><p id="3928d60c-4fb1-80a4-9151-c00a556d2cda" class="" dir="auto">[안전장치]<br/>핵심 정보가 부족하면 가능한 범위까지만 작성한다.</p><p id="3928d60c-4fb1-809c-b182-dfd42cb317f0" class="" dir="auto">[확인 질문 규칙]<br/>링크만 입력되었고 기사 내용을 확인할 수 없는 경우 기사 본문을 추가로 요청한다.<br/>날짜나 출처가 불명확하면 &quot;확인 필요&quot;라고 표시한다.</p><p id="3928d60c-4fb1-8059-b1b9-d510715aef65" class="" dir="auto">[섹터 분류 규칙]<br/>국제/국내/금융/증권/부동산 중 1개만 선택한다.<br/>섹터가 애매하면 가장 핵심적인 주제를 기준으로 선택한다.</p><p id="3928d60c-4fb1-8079-b388-eb2a55fa9b8d" class="" dir="auto">국제: 해외 국가, 국제기구, 글로벌 공급망, 전쟁, 무역 갈등, 해외 금리/환율<br/>국내: 한국 정부 정책, 국내 산업, 국내 경기, 고용, 물가<br/>금융: 금리, 환율, 은행, 대출, 통화정책, 채권<br/>증권: 주식시장, 코스피/코스닥, 상장사 실적, IPO, 반도체주 등<br/>부동산: 집값, 전세, 월세, 분양, 재건축, PF, 부동산 정책</p><p id="3928d60c-4fb1-8060-9170-f3064f7f3dfc" class="" dir="auto">[출처 작성 규칙]<br/>입력으로 제공된 링크 또는 기사 정보만 출처로 작성하고,<br/>임의로 다른 출처를 추가하지 않는다.</p><p id="3928d60c-4fb1-808d-94be-e4cfd6bb90ac" class="" dir="auto">[사실·수치·정책 처리 규칙]<br/>사실, 수치, 정책, 기관명, 날짜는 기사에 근거가 있을 때만 작성한다.<br/>근거가 불충분하거나 확인되지 않으면 임의로 보완하지 않는다.<br/>정확성이 불확실한 정보는 단정하지 말고 &quot;확인 필요&quot;라고 표시한다.</p><p id="3928d60c-4fb1-808b-a5f8-fc7fdb613eaf" class="" dir="auto">[금지 사항]<br/>기사에 없는 사실이나 정보 추가 금지<br/>확인되지 않은 해석의 단정 금지<br/>감정적 표현 및 과장된 표현 금지<br/>투자 조언, 매수·매도 추천, 가격 전망 단정 금지<br/>정치적 편향 표현 금지<br/>불필요하게 긴 설명 금지</p><p id="3928d60c-4fb1-80aa-80e6-e41169c962e4" class="" dir="auto">[우선순위]<br/>정확성 &gt; 템플릿 준수 &gt; 명확성 &gt; 친절함</p></div></aside><p id="3928d60c-4fb1-80b2-95ec-eb85a6f232ad" class="" dir="auto">
+</p><p id="3928d60c-4fb1-8032-9ace-fdcb058e716a" class="" dir="auto">-비교에 사용한 업무 과업 템플릿</p><aside class="block-color-yellow_background callout" data-notion-callout="" data-notion-callout-background="yellow_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8021-99bc-dad8aafcf988" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-805a-95d0-e5e908885c3a" class="" dir="auto">[업무 과업]<br/>경제 뉴스 이슈 분석</p><p id="3928d60c-4fb1-8026-9ca1-e7134022a5a5" class="" dir="auto">[타겟 사용자]<br/>금융 공기업 취준생 및 기본적인 경제 시사 상식을 가진 뉴스 독자</p><p id="3928d60c-4fb1-802a-b937-f4e9d888b36d" class="" dir="auto">[입력 데이터 형태]<br/><a href="https://www.hankyung.com/article/2026070225686">https://www.hankyung.com/article/2026070225686</a></p></div></aside><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-icon="💡" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-80ee-b292-d7ac682ae62c" dir="ltr"><div style="font-size:1.5em"><span class="icon" data-emoji="💡"></span></div><div style="width:100%"><ol type="1" id="3928d60c-4fb1-806c-a0b0-c44dab1b8fa5" class="numbered-list" start="1" dir="auto"><li>gpt</li></ol><p id="3928d60c-4fb1-80e4-81b4-df71866bb245" class="" dir="auto">링크만 제공되어 기사 내용을 확인할 수 없습니다.</p><p id="3928d60c-4fb1-80bf-bf66-c8ca79ef782b" class="" dir="auto">정확한 분석을 위해 <strong>기사 본문 또는 주요 내용</strong>을 함께 보내주세요.</p><p id="3928d60c-4fb1-8056-a0a6-da7757e8859d" class="" dir="auto">제공된 출처: <a href="https://www.hankyung.com/article/2026070225686">https://www.hankyung.com/article/2026070225686</a></p><p id="3928d60c-4fb1-80e7-bf97-f224b7ca106a" class="" dir="auto">본문을 보내주시면 아래 형식에 맞춰 정리하겠습니다.</p><p id="3928d60c-4fb1-8020-83e3-fd62aef3d1c7" class="" dir="auto">[1. 섹터]</p><p id="3928d60c-4fb1-803a-af12-dff625ce166d" class="" dir="auto">[2. 제목]</p><p id="3928d60c-4fb1-80a8-b30a-ce3da6cb3621" class="" dir="auto">[3. 날짜]</p><p id="3928d60c-4fb1-80e7-a5ac-c36832716fb5" class="" dir="auto">[4. 요약 3줄]</p><p id="3928d60c-4fb1-8024-8dbb-eccc07ca6087" class="" dir="auto">[5. 인사이트 3줄]</p><p id="3928d60c-4fb1-80a9-882b-eabccdfdab9d" class="" dir="auto">[6. 이 뉴스가 중요한 이유]</p><p id="3928d60c-4fb1-803b-b097-ddb3a8a06b1b" class="" dir="auto">[7. 출처]</p></div></aside><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-icon="💡" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8036-8b07-c9b21df4cc7b" dir="ltr"><div style="font-size:1.5em"><span class="icon" data-emoji="💡"></span></div><div style="width:100%"><ol type="1" id="3928d60c-4fb1-801f-b92f-e85ebaf68dc3" class="numbered-list" start="2" dir="auto"><li>claude</li></ol><p id="3928d60c-4fb1-807f-b0f4-d0b0296a89ea" class="" dir="auto">입력해 주신 것은 <strong>링크만</strong> 제공된 경우입니다.</p><p id="3928d60c-4fb1-8029-8a1f-c309b77bdb25" class="" dir="auto">해당 링크의 기사 본문을 직접 확인할 수 없어, 분석을 진행하기 어렵습니다.</p><p id="3928d60c-4fb1-80ce-95b7-f285d7625cc1" class="" dir="auto">📌 <strong>기사 본문을 추가로 요청드립니다.</strong><br/>아래 중 편하신 방법으로 전달해 주세요.</p><ul id="3928d60c-4fb1-804e-8f37-d3aa0af6eff4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사 <strong>본문 전체 복사·붙여넣기</strong></li></ul><ul id="3928d60c-4fb1-80b5-a1e4-d0389fdba40c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">또는 <strong>핵심 문단 + 제목 + 날짜</strong></li></ul><p id="3928d60c-4fb1-8052-8e44-f911775f0348" class="" dir="auto">본문을 주시면 즉시 지정된 형식으로 정리해 드리겠습니다. 📰</p></div></aside><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-icon="💡" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8090-a9ad-f6673b137c40" dir="ltr"><div style="font-size:1.5em"><span class="icon" data-emoji="💡"></span></div><div style="width:100%"><ol type="1" id="3928d60c-4fb1-80e3-96bb-ed224c0716cd" class="numbered-list" start="3" dir="auto"><li>gemini</li></ol><p id="3928d60c-4fb1-80c8-8807-e7eacf05eec7" class="" dir="auto">안녕하세요! 경제 뉴스를 분석하기 위해 링크를 남겨주셨군요. 취업 준비와 경제 공부를 위해 꾸준히 이슈를 챙겨보시는 모습이 정말 훌륭합니다! 👏</p><p id="3928d60c-4fb1-80a4-a4dd-ed438e9af98c" class="" dir="auto">하지만 현재 남겨주신 링크만으로는 제가 기사 본문 내용을 직접 읽어오고 확인할 수가 없습니다.</p><p id="3928d60c-4fb1-8050-ba6b-e2e0ca323dac" class="" dir="auto">정확하고 깊이 있는 분석을 위해 <strong>기사의 제목, 날짜, 그리고 본문 내용</strong>을 복사해서 이곳에 다시 입력해 주시겠어요?</p><p id="3928d60c-4fb1-80c3-b220-eae5232c7797" class="" dir="auto">본문을 제공해 주시면 요청하신 [경제 뉴스 큐레이터] 양식에 맞춰 핵심만 명확하게 정리해 드리겠습니다. 기다리고 있겠습니다! 😊</p></div></aside><p id="3928d60c-4fb1-8046-8919-ef47b27c9c71" class="" dir="auto">
+</p><p id="3928d60c-4fb1-8032-af56-ca071d948ddd" class="" dir="auto">-비교에 사용한 본문</p><aside class="block-color-yellow_background callout" data-notion-callout="" data-notion-callout-background="yellow_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-80e1-bcbe-f764d76df2db" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-80dc-a1e6-cac69df0c7e7" class="" dir="auto">설상가상 악재만 줄줄이…1600원 &#x27;킹달러&#x27; 공포 덮쳤다 [분석+]<br/>입력2026.07.03 06:30 수정2026.07.03 09:06<br/>기사 스크랩<br/>댓글<br/>1<br/>기사 공유<br/>글자크기 조절<br/>프린트<br/>강경주 기자<br/>강경주<br/>구글 검색 선호 출처로 추가<br/>Google 검색에서 한국경제 기사를 더 자주 볼 수 있습니다.</p><p id="3928d60c-4fb1-807f-ac2d-eddef2d302a7" class="" dir="auto">원·달러 환율 연일 금융위기 후 최고치 경신…1555원 넘어서<br/>미국 달러 강세·외국인 매도에 상방 압력<br/>달러 강세에 고환율이 계속되는 가운데 2일 인천국제공항 제2여객터미널 출국장에 자리한 은행 환전창구에 원/달러 환율이 표시돼있다. 2026.7.2 / 사진=연합뉴스<br/>달러 강세에 고환율이 계속되는 가운데 2일 인천국제공항 제2여객터미널 출국장에 자리한 은행 환전창구에 원/달러 환율이 표시돼있다. 2026.7.2 / 사진=연합뉴스<br/>원·달러 환율이 글로벌 금융위기 이후 최고 수준을 연일 경신하면서 증권가에선 잇달아 하반기 환율 전망치를 높이고 있다. 외국인 주식 순매도와 달러 강세가 이어지면서 환율 상단을 1600원까지 열어둬야 한다는 분석도 나왔다. 외환당국의 시장 개입 여력이 제한적이라는 점도 고환율 전망에 힘을 싣고 있다.</p><p id="3928d60c-4fb1-80c9-9c29-e98c1936c611" class="" dir="auto">2일 서울 외환시장에서 원·달러 환율은 전날보다 0.9원 오른 1555.8원으로 주간 거래를 마감했다. 환율은 2.6원 내린 1552.3원으로 출발해 장중 1550.7원까지 내리기도 했지만 마감 직전 하락 폭을 줄여 상승 마감했다. 전날 1554.9원으로 주간 거래를 마치며 글로벌 금융위기 당시인 2009년 3월5일(1568.0원) 후 최고 수준으로 치솟은 환율은 이날도 재차 고점을 높였다.</p><p id="3928d60c-4fb1-8080-b30d-d93637617a4e" class="" dir="auto">ADVERTISEMENT</p><p id="3928d60c-4fb1-80da-af07-f54f96f710b1" class="" dir="auto">광고</p><p id="3928d60c-4fb1-8042-b0c2-fa22537075b9" class="" dir="auto">지난달 월평균 원·달러 환율도 1527.9원에 달했다. 이는 국제통화기금(IMF) 외환위기 직후인 1998년 2월(1626.8원) 이후 28년 4개월 만에 최고 수준이다. 올해 상반기 평균 환율도 1484.6원까지 치솟았다.</p><p id="3928d60c-4fb1-8093-8903-eb9b8b4576ba" class="" dir="auto">전문가들은 외국인 매도세가 환율 상단을 밀어올리는 가장 큰 요인으로 꼽는다. 10거래일째 국내 주식을 순매도 중인 외국인 투자자가 이날도 코스피시장에서 약 4조3000억원 순매도하면서 환율을 끌어올렸다. 시장에서는 하반기에도 원·달러 환율이 높은 수준을 이어갈 가능성에 무게를 두고 있다.</p><p id="3928d60c-4fb1-8065-801a-c001df1a1112" class="" dir="auto">교보증권은 3분기 내 원·달러 환율 상단을 1600원까지 열어 둘 필요가 있다고 분석했다. 올 들어 지난달 말까지 누적 무역수지 흑자는 약 1380억달러에 달했다. 같은 기간 외국인의 국내 주식 순매도액은 약 980억달러다. 수출기업이 벌어들인 달러를 모두 원화로 환전하지 않는 반면, 외국인 주식 매도 자금은 달러 수요에 압력을 가하는 셈이다. 대규모 무역 흑자에도 환율이 쉽사리 내려오지 않는 배경이다.</p><p id="3928d60c-4fb1-8025-8d31-e58abec17a5b" class="" dir="auto">ADVERTISEMENT</p><p id="3928d60c-4fb1-805f-844c-da6b427f0dad" class="" dir="auto">외환당국의 대응 여력이 제한적이라는 점도 환율 상단을 높이는 요인으로 꼽힌다. 교보증권은 그간 한국은행의 개입 행태와 외환보유액 잔액을 고려하면 하반기 시장 안정에 사용할 수 있는 금액은 최대 500억달러 안팎이라고 추정했다. 국민연금의 환헤지 규모도 4월 기준 해외투자 잔액과 과거 환헤지 비율(15~20%)을 감안해 최대 700억달러 안팎으로 추산된다. 외국인의 리밸런싱(자산 재분배)을 위한 매도가 하반기에도 지속되면 방어 여력이 충분하지 않을 수 있다는 얘기다.</p><p id="3928d60c-4fb1-80af-acd1-e3ed6a6bb634" class="" dir="auto">위재현 교보증권 연구원은 &quot;높아진 환율에 외환당국의 실개입과 구두 개입이 지속되고 있지만 하반기에도 리밸런싱 매도가 지속될 경우 상단을 막아줄 눈에 띄는 요인이 부재하다&quot;고 설명했다. 노무라증권도 미국 금리 인상 기조에 따른 달러 강세 영향으로 원·달러 환율을 1600원으로 제시했다.<br/>2일 오후 서울시 중구 하나은행 본점 딜링룸 전광판. 서울외환시장에서 달러·원 환율은 전일 오후 3시30분 주간종가 보다 0.9원 오른 1555.8원을 기록했다. / 사진=뉴스1<br/>2일 오후 서울시 중구 하나은행 본점 딜링룸 전광판. 서울외환시장에서 달러·원 환율은 전일 오후 3시30분 주간종가 보다 0.9원 오른 1555.8원을 기록했다. / 사진=뉴스1<br/>다른 증권사들도 환율 전망치를 잇달아 높이고 있다. 문다운 한국투자증권 연구원은 &quot;환율 상단을 1600원까지 열어둔다는 것은 1560원을 넘어설 경우 어디에서 환율이 제어될지 알기 어려운 만큼 심리적인 상단을 넓게 설정해 리스크를 관리해야 한다는 취지&quot;라고 설명했다. 그는 &quot;1600원은 거시경제 변수나 기술적 분석으로 산출한 목표치가 아니라 상방 위험을 감안한 심리적 상단&quot;이라며 &quot;지금처럼 외국인 매도가 이어지고 달러 강세가 지속된다면 시장 개입 시점도 예단하기 어렵다&quot;고 덧붙였다.</p><p id="3928d60c-4fb1-80dc-ad80-e183a4ab8a99" class="" dir="auto">전규연 하나증권 연구원은 &quot;매파적인 미국 중앙은행(Fed)과 견조한 미국 경제가 당분간 달러 강세를 지지할 가능성이 높다&quot;며 &quot;외국인의 국내 주식 순매도와 구조적인 달러 유출 압력이 이어지면서 원·달러 환율의 상방 압력이 우세한 국면&quot;이라고 진단했다. 다만 &quot;1560원 부근에서는 수출업체 네고 물량과 외환당국 경계감이 환율 상승 속도를 일부 제어할 수 있다&quot;고 내다봤다.</p><p id="3928d60c-4fb1-8047-82c0-efa50ac3b858" class="" dir="auto">ADVERTISEMENT</p><p id="3928d60c-4fb1-80c5-b8d8-fdefba21d052" class="" dir="auto">하나증권은 최근 분기 평균 원·달러 환율 전망치를 3분기 1545원, 4분기 1530원으로 제시했다. 연평균 전망치는 앞서 4월 전망치(1460원)보다 49원 높인 1509원이다.</p><p id="3928d60c-4fb1-80c9-ae81-ca72be8f0296" class="" dir="auto">박상현 iM증권 연구원은 일본 엔화 약세도 변수로 꼽았다. 그는 &quot;슈퍼 엔저가 이어질 경우 원화 역시 동반 약세 압력을 받을 가능성이 크다&quot;며 &quot;외국인 주식 순매도와 엔화 약세가 겹칠 경우 원·달러 환율 상단은 더욱 높아질 수 있다&quot;고 전망했다.</p><p id="3928d60c-4fb1-80ef-80fd-d92738dbf678" class="" dir="auto">강경주 한경닷컴 기자 <a href="mailto:qurasoha@hankyung.com">qurasoha@hankyung.com</a></p></div></aside><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-icon="💡" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8005-b046-e026fdfc194a" dir="ltr"><div style="font-size:1.5em"><span class="icon" data-emoji="💡"></span></div><div style="width:100%"><ol type="1" id="3928d60c-4fb1-80cd-bc85-ebe2e281c0de" class="numbered-list" start="1" dir="auto"><li>gpt</li></ol><p id="3928d60c-4fb1-80c0-bc7c-ed3f599ada05" class="" dir="auto">[1. 섹터]</p><p id="3928d60c-4fb1-8071-b973-eb807b8601e3" class="" dir="auto">금융</p><p id="3928d60c-4fb1-8086-8ca1-d3a126e5d042" class="" dir="auto">[2. 제목]</p><p id="3928d60c-4fb1-80eb-85b3-e88a6e9ff6a9" class="" dir="auto">설상가상 악재만 줄줄이…1600원 ‘킹달러’ 공포 덮쳤다 [분석+]</p><p id="3928d60c-4fb1-8027-a351-fbd07e7a6643" class="" dir="auto">[3. 날짜]</p><p id="3928d60c-4fb1-8053-8b33-e463be6d6971" class="" dir="auto">2026.07.03</p><p id="3928d60c-4fb1-8064-865e-ccb05dce1048" class="" dir="auto">[4. 요약 3줄]</p><ol type="1" id="3928d60c-4fb1-80bd-8adf-cef2c0edc6ec" class="numbered-list" start="1" dir="auto"><li>원·달러 환율은 7월 2일 서울 외환시장에서 1555.8원에 마감하며 글로벌 금융위기 이후 최고 수준을 다시 경신했다.</li></ol><ol type="1" id="3928d60c-4fb1-8007-a54d-e772ee6baa1f" class="numbered-list" start="2" dir="auto"><li>외국인의 국내 주식 순매도, 미국 달러 강세, 미국 Fed의 매파적 기조가 원화 약세 압력으로 작용하고 있다.</li></ol><ol type="1" id="3928d60c-4fb1-8092-af4b-c44a55349a99" class="numbered-list" start="3" dir="auto"><li>증권가에서는 하반기 환율 전망치를 상향하며 3분기 중 환율 상단을 1600원까지 열어둬야 한다는 분석이 제기됐다.</li></ol><p id="3928d60c-4fb1-80e3-9d2d-c06c3cbcefdf" class="" dir="auto">[5. 인사이트 3줄]</p><ol type="1" id="3928d60c-4fb1-80a8-8ed0-e79369746d70" class="numbered-list" start="1" dir="auto"><li>대규모 무역수지 흑자에도 외국인 주식 매도 자금이 달러 수요를 키우면서 환율 하락을 제약하고 있다.</li></ol><ol type="1" id="3928d60c-4fb1-8029-a8ad-de9b4f83a20d" class="numbered-list" start="2" dir="auto"><li>외환당국의 시장 개입 여력과 국민연금 환헤지 여력이 제한적일 수 있다는 점이 고환율 우려를 키우고 있다.</li></ol><ol type="1" id="3928d60c-4fb1-805c-8cd9-e4a3caa77c3c" class="numbered-list" start="3" dir="auto"><li>엔화 약세까지 겹칠 경우 원화도 동반 약세 압력을 받을 수 있어 환율 변동성이 확대될 가능성이 있다.</li></ol><p id="3928d60c-4fb1-8043-a915-e8a51bd70117" class="" dir="auto">[6. 이 뉴스가 중요한 이유]</p><p id="3928d60c-4fb1-803c-82e7-f3965a540275" class="" dir="auto">원·달러 환율 급등은 수입물가, 기업 비용, 외국인 자금 흐름, 금융시장 안정성에 직접적인 영향을 미친다. 특히 고환율이 장기화되면 물가 부담과 통화정책 운용 부담이 커질 수 있어 금융 공기업 취준생 입장에서는 환율, 외환시장 개입, 외국인 자금 흐름을 함께 이해해야 하는 핵심 이슈다.</p><p id="3928d60c-4fb1-8031-9aca-ceb34fe915fa" class="" dir="auto">[7. 출처]</p><p id="3928d60c-4fb1-80c3-8fea-eb6a514e6d76" class="" dir="auto">한국경제 / 한경닷컴, 강경주 기자</p><p id="3928d60c-4fb1-807d-91da-f4fcd549c750" class="" dir="auto"><a href="https://www.hankyung.com/article/2026070225686">https://www.hankyung.com/article/2026070225686</a></p></div></aside><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-icon="💡" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-807f-a710-ce5cacc378a4" dir="ltr"><div style="font-size:1.5em"><span class="icon" data-emoji="💡"></span></div><div style="width:100%"><ol type="1" id="3928d60c-4fb1-8022-b26a-f4638fbf6868" class="numbered-list" start="2" dir="auto"><li>claude</li></ol><p id="3928d60c-4fb1-80de-b021-ec4212758d15" class="" dir="auto">[1. 섹터]<br/>금융</p><p id="3928d60c-4fb1-80ae-adb6-ca32245e4563" class="" dir="auto">[2. 제목]<br/>설상가상 악재만 줄줄이…1600원 &#x27;킹달러&#x27; 공포 덮쳤다 [분석+]</p><p id="3928d60c-4fb1-80a0-9b88-e6970ac4c1b6" class="" dir="auto">[3. 날짜]<br/>2026.07.03 (입력 06:30 / 수정 09:06)</p><p id="3928d60c-4fb1-8031-99f6-eb26bab15f72" class="" dir="auto">[4. 요약 3줄]</p><ol type="1" id="3928d60c-4fb1-806f-839e-f134271c1561" class="numbered-list" start="1" dir="auto"><li>원·달러 환율이 1555.8원으로 마감하며 글로벌 금융위기(2009년 3월) 이후 최고 수준을 연일 경신했다.</li></ol><ol type="1" id="3928d60c-4fb1-8063-aeac-ebc1a2781472" class="numbered-list" start="2" dir="auto"><li>외국인의 국내 주식 순매도(10거래일 연속, 2일 코스피 약 4.3조원)와 미국 달러 강세가 환율 상승 압력의 핵심 요인으로 지목된다.</li></ol><ol type="1" id="3928d60c-4fb1-807c-915d-d24e6fb6b8cf" class="numbered-list" start="3" dir="auto"><li>교보증권·노무라증권 등은 하반기 환율 상단을 1600원까지 열어둘 필요가 있다고 분석했다.</li></ol><p id="3928d60c-4fb1-8037-931d-c95f163d2940" class="" dir="auto">[5. 인사이트 3줄]</p><ol type="1" id="3928d60c-4fb1-806d-a13a-e72ddd456669" class="numbered-list" start="1" dir="auto"><li>누적 무역흑자(약 1380억달러)에도 수출대금이 원화로 전량 환전되지 않는 반면, 외국인 주식 매도자금(약 980억달러)이 달러 수요로 작용해 환율 하방 경직성이 나타난다.</li></ol><ol type="1" id="3928d60c-4fb1-801f-a565-c8e7f621934b" class="numbered-list" start="2" dir="auto"><li>외환당국의 하반기 시장 안정 가용 재원은 최대 500억달러 안팎으로 추정되어, 리밸런싱 매도가 지속될 경우 방어 여력이 제한적일 수 있다.</li></ol><ol type="1" id="3928d60c-4fb1-8090-8a9f-f143fc9b00a7" class="numbered-list" start="3" dir="auto"><li>&#x27;1600원&#x27;은 거시·기술적 목표치가 아닌 리스크 관리를 위한 심리적 상단으로 제시된 수치이며, 엔화 약세(슈퍼 엔저)도 원화 동반 약세 변수로 언급됐다.</li></ol><p id="3928d60c-4fb1-8093-a754-f16afc35403a" class="" dir="auto">[6. 이 뉴스가 중요한 이유]<br/>환율은 물가, 수출입, 통화정책, 외국인 자금 흐름과 직결되는 핵심 거시지표다. 금융위기 이후 최고 수준의 고환율은 대외 건전성 및 외환보유액 관리 이슈와 연결되며, 금융 공기업·정책 실무에서 반드시 파악해야 할 흐름이다.</p><p id="3928d60c-4fb1-80bb-8048-eea01a71f487" class="" dir="auto">[7. 출처]<br/>한국경제(한경닷컴), 강경주 기자<br/><a href="https://www.hankyung.com/article/2026070225686">https://www.hankyung.com/article/2026070225686</a></p><p id="3928d60c-4fb1-80a7-8d40-fe184906b7de" class="" dir="auto">📌 참고: 본 분석은 기사 내용에 근거해 정리한 것으로, 향후 환율 방향에 대한 전망·투자 판단은 포함하지 않습니다.</p></div></aside><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-icon="💡" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-808a-8c5e-f65946f7fb21" dir="ltr"><div style="font-size:1.5em"><span class="icon" data-emoji="💡"></span></div><div style="width:100%"><ol type="1" id="3928d60c-4fb1-80e0-b864-ddd862baed2e" class="numbered-list" start="3" dir="auto"><li>gemini</li></ol><p id="3928d60c-4fb1-8087-8bfd-f91a5d8b4bc9" class="" dir="auto">기사 본문을 제공해 주셔서 감사합니다! 금융 공기업 및 금융권 취업 준비에 최적화된 시사 정리 노트 형식으로 핵심만 명확하게 분석해 드립니다.</p><p id="3928d60c-4fb1-80ee-a833-f0d02298578e" class="" dir="auto"><strong>[1. 섹터]</strong><br/>금융 (환율/외환시장)</p><p id="3928d60c-4fb1-803a-b30f-f4aa6d470aca" class="" dir="auto"><strong>[2. 제목]</strong><br/>설상가상 악재만 줄줄이…1600원 &#x27;킹달러&#x27; 공포 덮쳤다</p><p id="3928d60c-4fb1-8018-858a-ed84a09c5acd" class="" dir="auto"><strong>[3. 날짜]</strong><br/>2026.07.03</p><p id="3928d60c-4fb1-8040-a0cc-dfe3492fa496" class="" dir="auto"><strong>[4. 요약 3줄]</strong></p><ol type="1" id="3928d60c-4fb1-8085-bc2e-d8d40d254448" class="numbered-list" start="1" dir="auto"><li>원·달러 환율이 1555.8원으로 마감하며 2009년 글로벌 금융위기 이후 최고치를 경신함.</li></ol><ol type="1" id="3928d60c-4fb1-8025-b2ce-ccb622c8083c" class="numbered-list" start="2" dir="auto"><li>미국의 달러 강세 기조와 외국인 투자자의 대규모 국내 주식 순매도가 환율 상승을 강하게 압박하고 있음.</li></ol><ol type="1" id="3928d60c-4fb1-8087-b463-fc9adf82f1fc" class="numbered-list" start="3" dir="auto"><li>외환당국의 시장 개입 여력이 제한적이라는 분석이 나오며, 주요 증권사들은 하반기 환율 상단을 1600원까지 열어두고 있음.</li></ol><p id="3928d60c-4fb1-8011-ae2d-e05a744acb1b" class="" dir="auto"><strong>[5. 인사이트 3줄]</strong></p><ol type="1" id="3928d60c-4fb1-80d2-8931-f14abedcb98f" class="numbered-list" start="1" dir="auto"><li>대규모 무역수지 흑자에도 불구하고 수출기업이 달러를 원화로 환전하지 않고, 외국인 주식 매도 자금이 달러 수요를 높여 환율 하락을 방어하지 못하는 구조적 엇박자가 발생함.</li></ol><ol type="1" id="3928d60c-4fb1-8041-a212-de3f7911d6ed" class="numbered-list" start="2" dir="auto"><li>한국은행의 실탄과 국민연금의 환헤지 규모를 합쳐도 외환 방어 여력이 한정적(최대 1200억 달러 안팎 추산)이어서, 외국인의 자산 재분배(리밸런싱) 매도 지속 시 환율 변동성 통제가 어려울 수 있음.</li></ol><ol type="1" id="3928d60c-4fb1-8090-83cc-faabc5ea554b" class="numbered-list" start="3" dir="auto"><li>미국의 견조한 경제와 매파적 통화정책, 그리고 일본의 &#x27;슈퍼 엔저&#x27; 현상 등 대외 거시경제 변수가 원화 가치 하락을 부추기는 핵심 리스크로 작용하고 있음.</li></ol><p id="3928d60c-4fb1-8030-8240-e1c5f865f168" class="" dir="auto"><strong>[6. 이 뉴스가 중요한 이유]</strong><br/>환율은 국가 경제의 펀더멘털을 보여주는 핵심 지표이자 수입 물가, 금리, 외국인 수급 등 금융시장 전반에 연쇄적인 영향을 미치기 때문입니다. 특히 현재의 환율 수준이 과거 외환위기(IMF)나 글로벌 금융위기 당시와 비교될 만큼 높고, 외환당국의 시장 개입 한계까지 지적되고 있어 향후 한국은행의 통화정책(금리 결정)과 거시경제 리스크 관리를 이해하는 데 필수적인 이슈입니다.</p><p id="3928d60c-4fb1-8021-ab6c-ff530b175b5f" class="" dir="auto"><strong>[7. 출처]</strong><br/>한국경제 (한경닷컴)</p><p id="3928d60c-4fb1-8096-9ff9-d0a3e245ab2b" class="" dir="auto">💡 <strong>튜터의 응원 한마디:</strong><br/>환율 기사는 거시경제의 흐름(금리, 물가, 무역, 외국인 수급)을 종합적으로 이해할 수 있는 가장 좋은 교재입니다. &#x27;왜 무역 흑자가 나는데도 환율이 안 떨어지는지&#x27;에 대한 기사 속 분석을 잘 기억해 두시면, 면접이나 논술에서 경제 구조를 입체적으로 설명하는 데 큰 도움이 될 것입니다.</p><p id="3928d60c-4fb1-80eb-8411-d4deca4574f9" class="" dir="auto">분석이 더 필요하거나 이해가 안 가는 경제 용어가 있다면 언제든 질문해 주세요! 화이팅입니다! 🚀</p></div></aside><hr id="3928d60c-4fb1-80ba-9405-d05dbcbfb056" dir="auto"/><h2 id="3928d60c-4fb1-8002-a6a0-f39b6c2958d7" style="display:inline-block" dir="auto">1-3 평가축 및 모델별 결과 요약</h2><p id="3928d60c-4fb1-80c0-bd00-c1f485dfdda1" class="" dir="auto">1) 평가 축</p><p id="3928d60c-4fb1-8042-a92f-d3ba7424991a" class="" dir="auto"> 본 평가는 단순 응답 가능 여부가 아니라, 경제 뉴스를 바로 분석할 수 있는 산출물인지를 중심으로 평가하였다. 특히 이번 과업은 금융 공기업 취준생 대상의 시사 정리이므로, 정확성, 형식 준수, 불필요한 부연 최소화, 인사이트 품질을 핵심 기준으로 삼았다.</p><p id="3928d60c-4fb1-80f3-8bc3-ca5d11949baf" class="" dir="auto"><mark class="highlight-gray_background" data-notion-highlight="gray_background">점수 기준: 1점(미흡) ~ 5점(우수)</mark></p><p id="3928d60c-4fb1-80bb-8c76-d32d40a7b72c" class="" dir="auto">2) 모델별 점수표</p><table id="3928d60c-4fb1-8087-a06e-fa6a9ebd0c47" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3928d60c-4fb1-80f1-9f8a-fcebcc29ec42" dir="ltr"><th id="lf;l" class="simple-table-header-color simple-table-header" style="width:152px">평가 축</th><th id="e:&lt;t" class="simple-table-header-color simple-table-header" style="width:73px">GPT</th><th id="ym?C" class="simple-table-header-color simple-table-header" style="width:66px">Claude</th><th id="OZPH" class="simple-table-header-color simple-table-header" style="width:71px">Gemini</th><th id="h\jx" class="simple-table-header-color simple-table-header" style="width:400px">근거</th></tr></thead><tbody><tr id="3928d60c-4fb1-80b8-be6a-e9dbb118ef6e" dir="ltr"><td id="lf;l" class="" style="width:152px"><strong>1. 정확성(기사 사실·수치 반영)</strong></td><td id="e:&lt;t" class="" style="width:73px">4</td><td id="ym?C" class="" style="width:66px">5</td><td id="OZPH" class="" style="width:71px">4</td><td id="h\jx" class="" style="width:400px">Claude가 기사 속 수치와 맥락을 가장 촘촘하게 반영했다. GPT와 Gemini도 핵심 사실은 정확했지만 Claude보다 세부 반영 수준은 낮았다.</td></tr><tr id="3928d60c-4fb1-80f6-8a67-feb77e6d3bc9" dir="ltr"><td id="lf;l" class="" style="width:152px"><strong>2. 형식 준수(지정 템플릿 충실도)</strong></td><td id="e:&lt;t" class="" style="width:73px">5</td><td id="ym?C" class="" style="width:66px">4</td><td id="OZPH" class="" style="width:71px">3</td><td id="h\jx" class="" style="width:400px">GPT는 요청한 형식을 가장 군더더기 없이 잘 지켰다. Claude는 형식은 맞췄지만 입력/수정 시각 등 불필요한 요소가 추가됐다. Gemini는 구조는 맞았지만 안내 문구와 추가 멘트가 섞여 템플릿 순도가 낮았다.</td></tr><tr id="3928d60c-4fb1-80e0-a2a8-f78a85b18447" dir="ltr"><td id="lf;l" class="" style="width:152px"><strong>3. 불필요 정보 최소화</strong></td><td id="e:&lt;t" class="" style="width:73px">5</td><td id="ym?C" class="" style="width:66px">3</td><td id="OZPH" class="" style="width:71px">2</td><td id="h\jx" class="" style="width:400px">GPT는 추가 설명 없이 필요한 내용만 출력했다. Claude는 수정 시각, 참고 문구 등이 다소 불필요했다. Gemini는 응원 문구, 설명 멘트 등 실무 산출물에 필요 없는 내용이 가장 많았다.</td></tr><tr id="3928d60c-4fb1-8031-b6ca-e484ac8183d5" dir="ltr"><td id="lf;l" class="" style="width:152px"><strong>4. 인사이트 품질(기사 의미 해석력)</strong></td><td id="e:&lt;t" class="" style="width:73px">4</td><td id="ym?C" class="" style="width:66px">5</td><td id="OZPH" class="" style="width:71px">5</td><td id="h\jx" class="" style="width:400px">Claude는 환율 상승 배경과 정책적 함의를 구조적으로 잘 설명했다. Gemini도 인사이트 문장이 가장 깔끔하고 정리된 편이었다. GPT는 핵심은 짚었지만 상대적으로 해석 깊이는 덜했다.</td></tr><tr id="3928d60c-4fb1-80e5-b4eb-ffd1c855814b" dir="ltr"><td id="lf;l" class="" style="width:152px"><strong>5. 한국어 자연스러움·가독성</strong></td><td id="e:&lt;t" class="" style="width:73px">4</td><td id="ym?C" class="" style="width:66px">5</td><td id="OZPH" class="" style="width:71px">5</td><td id="h\jx" class="" style="width:400px">Claude와 Gemini는 문장이 자연스럽고 읽기 편했다. 특히 Gemini는 개조식에 가까운 간결한 정리 방식이 좋았다. GPT는 실무적이지만 다소 평이했다.</td></tr><tr id="3928d60c-4fb1-808b-86f9-dc7f00d479ea" dir="ltr"><td id="lf;l" class="" style="width:152px"><strong>6. 실무 활용성(바로 제출 가능한 수준)</strong></td><td id="e:&lt;t" class="" style="width:73px">5</td><td id="ym?C" class="" style="width:66px">4</td><td id="OZPH" class="" style="width:71px">3</td><td id="h\jx" class="" style="width:400px">GPT는 별도 편집 없이 그대로 쓰기 좋은 출력이었다. Claude는 내용은 좋지만 약간 덜어내는 편집이 필요했다. Gemini는 품질은 좋지만 불필요한 멘트를 제거해야 했다.</td></tr><tr id="3928d60c-4fb1-8091-a073-e5c418a8f5b2" dir="ltr"><td id="lf;l" class="" style="width:152px"><strong>7. 링크만 입력됐을 때의 대응 적절성</strong></td><td id="e:&lt;t" class="" style="width:73px">5</td><td id="ym?C" class="" style="width:66px">5</td><td id="OZPH" class="" style="width:71px">4</td><td id="h\jx" class="" style="width:400px">세 모델 모두 본문 요청은 적절했으나, GPT와 Claude가 더 간결하고 명확했다. Gemini는 친절하지만 다소 길었다.</td></tr><tr id="3928d60c-4fb1-80aa-aa89-f538dd9518b9" dir="ltr"><td id="lf;l" class="" style="width:152px"><mark class="highlight-gray_background" data-notion-highlight="gray_background">최종 점수</mark></td><td id="e:&lt;t" class="" style="width:73px">32</td><td id="ym?C" class="" style="width:66px">31</td><td id="OZPH" class="" style="width:71px">26</td><td id="h\jx" class="" style="width:400px"></td></tr></tbody></table><p id="3928d60c-4fb1-800e-9173-f68ba4da657d" class="" dir="auto">3) 모델별 결과 요약</p><p id="3928d60c-4fb1-8068-b5fc-da251ea9dd8a" class="" dir="auto">① GPT</p><p id="3928d60c-4fb1-8099-9f5a-ee41b44d5e5c" class="" dir="auto"> GPT는 가장 실무형에 가까운 출력을 보여줬다. 특히 불필요한 문장 없이 요청한 형식만 정확히 맞춰 작성했다는 점이 강점이다. 이번 과업처럼 뉴스 구조화 요약 결과를 바로 제출하거나 누적 저장해야 하는 작업에서는 이런 간결성이 큰 장점이다. 다만 인사이트의 깊이는 Claude나 Gemini보다 약간 보수적인 편이었다.</p><p id="3928d60c-4fb1-80e9-9cbb-fcc0a41c84ae" class="" dir="auto">② Claude</p><p id="3928d60c-4fb1-802e-9a44-c4485c3d35c0" class="" dir="auto"> Claude는 정확성과 인사이트 측면에서 가장 강한 성능을 보였다. 수치 반영, 맥락 설명, 기사 의미 해석은 세 모델 중 가장 뛰어났다. 다만 수정 시각까지 포함한 점, 마지막 참고 문구 등은 불필요했다. 즉, 내용은 좋지만 조금 덜어내는 편집이 필요한 출력이었다.</p><p id="3928d60c-4fb1-805a-aa23-d5548e4df21f" class="" dir="auto">③ Gemini</p><p id="3928d60c-4fb1-8015-bfb5-e6b017514143" class="" dir="auto"> Gemini는 인사이트 문장의 정리감과 가독성이 좋았다. 특히 개조식에 가까운 간결한 톤으로 핵심을 정리한 부분은 인상적이었다. 다만 전체적으로 지나치게 친절하고, 튜터의 응원 한마디 같은 실무에 필요 없는 문구가 포함되어 산출물 순도가 떨어졌다. 학습 보조용으로는 강점이 있지만, 실무형 템플릿 출력에는 덜 적합했다.</p><hr id="3928d60c-4fb1-809e-bd0c-e91abae2c7ff" dir="auto"/><h2 id="3928d60c-4fb1-80c0-b3bd-ca1b3d23355b" style="display:inline-block" dir="auto">1-4. 최종 선정 결론</h2><p id="3928d60c-4fb1-8010-898c-e93c042399ad" class="" dir="auto"> 최종적으로는 GPT를 본 업무 과업에 가장 적합한 모델로 선정할 수 있다. 그 이유는 해당 업무 과업의 핵심은 “가장 풍부한 설명”이 아니라, 지정된 형식에 맞춰 경제 뉴스 핵심을 깔끔하게 구조화하는 것이기 때문이다. </p><p id="3928d60c-4fb1-807f-ae30-d82d52d07de7" class="" dir="auto"> GPT는 링크만 입력된 상황에서도 필요한 추가 입력을 명확하게 요청했고, 본문이 주어진 뒤에는 군더더기 없이 결과를 출력해 실무 활용성이 가장 높았다. Claude는 사실 반영과 인사이트 면에서는 매우 우수했지만, 입력 시각·수정 시각·참고 문구 등 과업상 꼭 필요하지 않은 정보가 추가되었다는 점에서 감점 요인이 있었다. Gemini는 인사이트 문장 자체는 오히려 가장 깔끔한 편이었지만, 지나치게 친절한 안내와 응원 문구 등 불필요한 요소가 많아 아쉬웠다.</p><p id="3928d60c-4fb1-8000-8227-e4b46edb8598" class="" dir="auto"> 따라서 이번 업무처럼 금융 공기업 취준생용 경제 뉴스 요약을 일정한 템플릿으로 반복 생산하는 과업에서는, 가장 간결하고 안정적으로 형식을 지키는 GPT가 최종 선택 모델로 가장 적절하다고 판단된다.</p><hr id="3928d60c-4fb1-8086-9efe-fa967aace95f" dir="auto"/><h2 id="3928d60c-4fb1-80f1-b1d8-e50da928dd43" style="display:inline-block" dir="auto">1-5. 참고 사항</h2><ul id="3928d60c-4fb1-808f-a646-cc811ea67e6a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">주 사용 모델명: GPT-5.4 및 GPT-5.5, Claude Opus 4.8, Gemini 3.1 Pro</li></ul><ul id="3928d60c-4fb1-8038-b749-f815c4ac9312" class="bulleted-list" dir="auto"><li style="list-style-type:disc">요금제: 유료(x1, 1.5, 2)</li></ul><ul id="3928d60c-4fb1-80fc-826c-c9f31b4428b6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">사용 채널: 웹</li></ul><ul id="3928d60c-4fb1-808a-9f38-d3d2fa083456" class="bulleted-list" dir="auto"><li style="list-style-type:disc">사용 날짜: 2026-07-03</li></ul><ul id="3928d60c-4fb1-8055-8566-ec6c827e4121" class="bulleted-list" dir="auto"><li style="list-style-type:disc">주요 설정: 사용자 지정 없음. 기본값 사용</li></ul><hr id="3928d60c-4fb1-80a5-829c-cbfc6f37699a" dir="auto"/><p id="3928d60c-4fb1-80fe-83af-ea81350e4951" class="" dir="auto">
+</p><p id="3928d60c-4fb1-8012-bc8b-fbec96a8aaa2" class="" dir="auto">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

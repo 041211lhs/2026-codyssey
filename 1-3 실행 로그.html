@@ -1,0 +1,768 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>1-3. 실행 로그</title><meta name="data-notion-page-icon" content="📁"/><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%93%81%3C%2Ftext%3E%3C%2Fsvg%3E"/><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure,
+aside,
+details {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="3928d60c-4fb1-8080-92e1-c7fa2152bb33" class="page sans" data-notion-page-icon="📁"><header><div class="page-header-icon undefined"><span class="icon" data-emoji="📁"></span></div><h1 class="page-title" dir="auto"><strong>1-3. 실행 로그</strong></h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-relation"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/arrow-northeast_gray.svg" style="width:14px;height:14px;display:block"/></span>과제</th><td><a href="https://app.notion.com/p/1-3928d60c4fb1800ebbf2e3cd00fe4162?pvs=21" data-notion-page-id="3928d60c-4fb1-800e-bbf2-e3cd00fe4162" data-notion-space-id="1aa8d60c-4fb1-8108-bb6b-00036e7d4770">1차 미션</a></td></tr><tr class="property-row property-row-date"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/calendar_gray.svg" style="width:14px;height:14px;display:block"/></span>날짜</th><td><time datetime="2026-07-03">2026년 7월 3일</time></td></tr><tr class="property-row property-row-status"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/burst_gray.svg" style="width:14px;height:14px;display:block"/></span>상태</th><td><span class="status-value select-value-color-blue"><div class="status-dot status-dot-color-blue"></div>진행 중</span></td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/arrow-circle-down_gray.svg" style="width:14px;height:14px;display:block"/></span>유형</th><td><span class="selected-value select-value-color-green">보고서</span></td></tr></tbody></table></header><div class="page-body"><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-80c2-8aa5-d0c33e8723e3" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-80bf-b526-c0e61e88966a" class="" dir="auto">선택한 업무 과업 시나리오로 10턴 이상 실제 대화를 수행한 전문과, 문제 발생 지점(환각/문맥 끊김 등) 및 수정 결과 요약을 담은 로그</p></div></aside><p id="3928d60c-4fb1-808a-ac53-c8a0556c25e8" class="" dir="auto">
+</p><h2 id="3928d60c-4fb1-80f8-9fc5-ca5dbf7bf00d" style="display:inline-block" dir="auto">3-1 시나리오 설명</h2><p id="3928d60c-4fb1-80fe-ae20-d0b3f0f91498" class="" dir="auto"> 본 실행 로그는 최종 선정된 v2 프롬프트를 실제 경제뉴스 분석 상황에 적용하여 실사용 가능성을 점검하기 위해 작성하였다. 초기 설계가 완료된 이후, 다양한 입력 조건과 출력 결과를 테스트하며 형식 일관성, 사실성, 수치 반영, 요약과 인사이트의 구분이 안정적으로 유지되는지를 확인하였다. 이 과정에서 일부 예외 상황에서 출력 품질 저하 가능성이 발견되었고, 이에 따라 세부 규칙을 추가·보완하는 방식으로 수정 결과를 기록하였다.</p><hr id="3928d60c-4fb1-80f0-a289-d0282f20d062" dir="auto"/><h2 id="3928d60c-4fb1-8096-b8d3-c1f69f8da232" style="display:inline-block" dir="auto">3-2 10턴 이상 대화 전문</h2><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-809c-a656-cda48800e115" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-803c-afea-ff4fb748072f" class="" dir="auto">1. 사용자: 뉴스 제공</p><p id="3928d60c-4fb1-80d0-ba18-d76015db7245" class="" dir="auto"><br/>1년새 431% 커진 레버리지 ETF…변동성 확 키우는 ‘웩더독’ 됐다 [도마 오른 레버리지 ETF]<br/>입력 2026-07-03 11:28:04<br/><br/>문이림<br/>문이림 기자<br/><br/>구독 +<br/>국내 ETF 시장 7.1% 차지…미국의 4배<br/><br/>“기계적 리밸런싱이 양방향 변동성 증폭”<br/><br/><br/>국내 증시에서 레버리지 상장지수펀드(ETF)가 빠르게 몸집을 키우면서 시장 변동성을 키우는 ‘웩더독’ 현상이 심화하고 있다는 지적이 나온다.<br/><br/>3일 금융정보업체 에프앤가이드에 따르면 지난 1일 기준 국내 상장 레버리지 ETF의 순자산총액(AUM)은 36조5183억원으로 집계됐다. 지난해 7월 1일 6조8755억원에서 1년 새 431% 급증했다.<br/><br/>ETF 시장 내 존재감도 커졌다. 레버리지 ETF는 지난 1일 기준 국내 ETF 전체 순자산총액의 7.1%를 차지했다. 1년 전 3.4%에 그쳤던 비중이 두 배 넘게 뛴 것이다. 삼성증권이 추정한 미국 ETF 시장의 레버리지 ETF 비중(1.6%)과 비교하면 4배가 넘는 수준이다.<br/><br/>증권가는 레버리지 ETF 확대가 시장 변동성을 키우고 있다고 입을 모은다. 양일우 삼성증권 연구원은 “전통적인 신용 확대가 변동성 확대 요인은 아니”라며 “레버리지 ETF 비중 확대가 수급 측면에서 변동성 확대 요인”이라고 말했다. 과거 증시 변동성을 키우던 신용융자 대신 레버리지 ETF가 새로운 변수로 떠오르고 있다는 분석이다.<br/><br/>유명간 미래에셋증권 연구원도 “주식 시장의 변동성은 구조적으로 높아졌다”면서 “국내외 ETF 시장이 빠르게 성장하면서 레버리지 ETF의 영향력이 커졌기 때문”이라고 짚었다.<br/><br/><br/>실제 지난달 국내 증시는 이례적인 변동성 장세를 연출했다. 지난달 유가증권시장에서는 매수·매도 사이드카가 총 10차례 발동했고 서킷브레이커도 3차례 작동했다.<br/><br/>코스피200 변동성지수(VKOSPI)는 지난달 24일 장중 97.78까지 치솟으며 2008년 글로벌 금융위기 이후 최고치를 기록했다. 올해 상반기 평균 VKOSPI도 57.3에 달했다.<br/><br/><br/>증권가는 최근 국내 증시가 쏠림에 따른 구조적 변동성 국면에 들어섰다고 진단한다. 조창민 현대차증권 연구원은 “변동성의 진원은 소수 주도주로의 쏠림”이라며 “반도체 시가총액 비중이 60%에 이르러 한 업종의 변동성이 지수 전체를 좌우하고, 여기에 파생시장 거래 활성화와 단일종목 레버리지 ETF의 일일 리밸런싱이 더해져 양방향 변동성을 기계적으로 증폭하고 있다”고 분석했다.<br/><br/>특히 지난 5월 삼성전자·SK하이닉스 단일종목 레버리지 ETF가 출시되면서 꼬리(파생상품)가 몸통(기초자산)을 흔드는 ‘웩더독’ 현상이 강해졌다는 평가가 나온다.<br/>————————————————————————————————————————<br/>2. AI<br/>[1. 섹터]<br/>증권<br/><br/>[2. 제목]<br/>1년새 431% 커진 레버리지 ETF…변동성 확 키우는 ‘웩더독’ 됐다 [도마 오른 레버리지 ETF]<br/><br/>[3. 날짜]<br/>2026.07.03<br/><br/>[4. 요약 3줄]<br/>1. 지난 1일 기준 국내 상장 레버리지 ETF 순자산총액은 36조5183억원으로, 지난해 7월 1일 6조8755억원 대비 1년 새 431% 급증했다.<br/>2. 레버리지 ETF는 국내 ETF 전체 순자산총액의 7.1%를 차지해 1년 전 3.4%보다 두 배 넘게 늘었고, 미국 ETF 시장 추정 비중 1.6%보다 4배 넘는 수준이다.<br/>3. 지난달 유가증권시장에서는 사이드카가 10차례, 서킷브레이커가 3차례 발동했으며, VKOSPI는 지난달 24일 장중 97.78까지 올라 2008년 글로벌 금융위기 이후 최고치를 기록했다.<br/><br/>[5. 인사이트 3줄]<br/>1. 기사에서는 레버리지 ETF의 기계적 일일 리밸런싱이 수급에 영향을 주며 국내 증시의 양방향 변동성을 키우는 구조적 요인으로 지목됐다.<br/>2. 반도체 시가총액 비중 확대와 파생시장 거래 활성화가 겹치면서, 특정 업종과 상품의 움직임이 지수 전체 변동성으로 이어지는 시장 구조가 부각됐다.<br/>3. 금융 공기업·증권업 면접에서는 ETF 성장, 파생상품 연계 수급, 웩더독 현상이 시장 안정성과 어떤 관계를 갖는지 설명하는 사례로 활용할 수 있다.<br/><br/>[6. 이 뉴스가 중요한 이유]<br/>레버리지 ETF의 급성장이 단순한 상품 확대를 넘어 국내 증시 변동성 확대와 연결될 수 있다는 점을 보여준다. 시장 구조와 투자상품이 지수에 미치는 영향을 이해하는 데 필요한 사례다.<br/><br/>[7. 출처]<br/>헤럴드경제 / 문이림 기자 / 확인 필요<br/>————————————————————————————————————————<br/>3. 사용자<br/>출처 링크가 안보일 때는, 링크 확인 필요라고 작성하면 돼<br/>————————————————————————————————————————<br/>4. Ai<br/>네. 링크가 보이지 않으면 출처는 아래처럼 작성하겠습니다.<br/><br/>헤럴드경제 / 문이림 기자 / 링크 확인 필요<br/>————————————————————————————————————————<br/>5. 사용자: 추가 정보 제공</p><p id="3928d60c-4fb1-8010-a998-e16981b76d17" class="" dir="auto"><br/>변동성을 키우는 배경에는 레버리지 ETF의 구조적 특성이 있다. 레버리지 ETF는 목표 수익률을 유지하기 위해 매일 장 마감 전 기초자산 비중을 다시 맞춘다. 주가가 오르면 목표 익스포저를 유지하기 위해 기초자산을 추가 매수하고 주가가 내리면 추가 매도하는 구조다. 상승장에서는 매수가 매수를, 하락장에서는 매도가 매도를 부추기는 이른바 ‘숏 감마(Short Gamma)’ 구조가 나타난다.<br/><br/>국내 증시는 단일종목 레버리지 ETF에 유독 취약한 시장이다. 삼성전자와 SK하이닉스가 지수에서 차지하는 비중이 압도적으로 높아서다.<br/><br/>지난 1일 기준 삼성전자·SK하이닉스 단일종목 레버리지 ETF 14종의 순자산총액은 14조9526억원으로 전체 레버리지 ETF 순자산총액의 40.9%를 차지했다.<br/><br/>박우열 신한투자증권 연구원은 “시가총액 비중이 가장 큰 엔비디아의 레버리지 ETF가 나올 당시 지수 비중은 2-3%에 불과했고 현재도 8% 수준”이라며 “반면 삼성전자와 SK하이닉스가 코스피 지수에서 차지하는 비중은 KOSPI200 대비 65% 수준이므로 단일종목의 변동성 확대가 지수에 미치는 영향력은 그만큼 더 커지게 된다”고 설명했다. 문이림 기자<br/><br/>moon@heraldcorp.com 추가 정보가 있어<br/>————————————————————————————————————————<br/>6. AI<br/>[1. 섹터]<br/>증권<br/><br/>[2. 제목]<br/>1년새 431% 커진 레버리지 ETF…변동성 확 키우는 ‘웩더독’ 됐다 [도마 오른 레버리지 ETF]<br/><br/>[3. 날짜]<br/>2026.07.03<br/><br/>[4. 요약 3줄]<br/>1. 지난 1일 기준 국내 상장 레버리지 ETF 순자산총액은 36조5183억원으로, 지난해 7월 1일 6조8755억원 대비 1년 새 431% 급증했다.<br/>2. 레버리지 ETF는 목표 수익률 유지를 위해 장 마감 전 기초자산 비중을 매일 조정하며, 주가 상승 시 추가 매수하고 하락 시 추가 매도하는 구조로 변동성을 키울 수 있다고 기사에서 설명했다.<br/>3. 지난 1일 기준 삼성전자·SK하이닉스 단일종목 레버리지 ETF 14종의 순자산총액은 14조9526억원으로 전체 레버리지 ETF의 40.9%를 차지했다.<br/><br/>[5. 인사이트 3줄]<br/>1. 기사에서는 레버리지 ETF의 일일 리밸런싱 구조가 상승장과 하락장 모두에서 수급을 같은 방향으로 강화해 시장 변동성을 증폭시키는 요인으로 제시됐다.<br/>2. 국내 증시는 삼성전자와 SK하이닉스의 지수 비중이 높아 단일종목 레버리지 ETF 확대가 개별 종목을 넘어 지수 전체에 미치는 영향이 상대적으로 크게 나타날 수 있다.<br/>3. 금융 공기업·증권업 면접에서는 ETF 구조, 숏 감마, 웩더독 현상이 시장 안정성과 어떻게 연결되는지 설명하는 사례로 활용할 수 있다.<br/><br/>[6. 이 뉴스가 중요한 이유]<br/>국내 증시에서 레버리지 ETF 확대가 단순한 상품 성장보다 시장 구조와 변동성 문제로 이어질 수 있음을 보여준다. 특히 특정 대형주 쏠림이 강한 시장에서는 금융상품 구조가 지수 전체에 미치는 영향을 이해할 필요가 있다.<br/><br/>[7. 출처]<br/>헤럴드경제 / 문이림 기자 / 링크 확인 필요<br/>————————————————————————————————————————<br/>7. 사용자<br/>대상을 중학생으로 설정하고 이해하기 쉽게 요약 및 인사이트를 재작성해줘<br/>————————————————————————————————————————<br/>8. ai<br/>좋아요. 중학생도 이해하기 쉽도록 **어려운 말은 풀어서** 다시 쓰면 아래와 같습니다.<br/><br/>[4. 요약 3줄 - 중학생용]  <br/>1. **레버리지 ETF**는 주가가 오를 때나 내릴 때 **보통보다 더 크게 움직이도록 만든 투자 상품**인데, 국내에서는 1년 사이 규모가 **6조8755억원에서 36조5183억원으로 431%나 늘었어요.**  <br/>2. 이 상품은 **매일 장이 끝나기 전에 비율을 다시 맞추는 구조**라서, 주가가 오르면 더 사고, 주가가 내리면 더 팔게 되는 경우가 많아요. 그래서 **오를 때는 더 오르고, 내릴 때는 더 내리는 현상**이 생길 수 있어요.  <br/>3. 특히 삼성전자·SK하이닉스 관련 레버리지 ETF 14개의 규모가 **14조9526억원**으로, 전체 레버리지 ETF의 **40.9%**를 차지할 만큼 커져서, 이들 종목의 움직임이 시장 전체에 더 큰 영향을 줄 수 있어요.<br/><br/>[5. 인사이트 3줄 - 중학생용]  <br/>1. 원래는 주식시장이 먼저 움직이고 ETF가 따라가야 하는데, 지금은 레버리지 ETF가 너무 커져서 **오히려 시장의 흔들림을 더 키우는 상황**이 나타날 수 있어요. 이것을 **‘꼬리가 몸통을 흔드는 웩더독’**이라고 해요.  <br/>2. 한국 주식시장은 삼성전자와 SK하이닉스의 비중이 매우 커서, **이 두 종목이 크게 움직이면 코스피 전체도 함께 흔들리기 쉬운 구조**예요.  <br/>3. 즉, 이 기사는 **투자 상품이 많아지는 것이 항상 좋은 것만은 아니고**, 너무 커지면 시장을 더 불안하게 만들 수도 있다는 점을 보여줘요.<br/><br/>원하면 제가 이것도 이어서  <br/>**“중학생 발표용 1분 요약”**이나  <br/>**“진짜 쉬운 비유 버전”**으로 한 번 더 바꿔드릴게요.<br/>————————————————————————————————————————<br/>9. 사용자<br/>내가 분명 3줄로 요약하라고 했잖아 대상만 바뀌고 나머지 규칙은 동일해<br/>————————————————————————————————————————<br/>10. AI: 변경 반영 + 기존 결정사항 유지</p><p id="3928d60c-4fb1-802a-b85c-d1c0a214556f" class="" dir="auto"><br/>맞아요. 제가 규칙을 놓쳤습니다. 아래처럼 **3줄만** 다시 정리할게요.<br/><br/>[4. 요약 3줄 - 중학생용]  <br/>1. 레버리지 ETF는 주가가 오르거나 내릴 때 움직임이 더 크게 나오도록 만든 상품인데, 국내에서는 1년 사이 규모가 6조8755억원에서 36조5183억원으로 431% 늘었다.  <br/>2. 이 상품은 매일 장이 끝나기 전에 비율을 다시 맞추기 때문에, 주가가 오르면 더 사고 주가가 내리면 더 팔아서 시장의 오르내림을 더 크게 만들 수 있다.  <br/>3. 특히 삼성전자·SK하이닉스 관련 레버리지 ETF 14개의 규모가 14조9526억원으로 전체의 40.9%를 차지해, 두 종목의 움직임이 시장 전체에 큰 영향을 줄 수 있다.  <br/><br/>[5. 인사이트 3줄 - 중학생용]  <br/>1. 레버리지 ETF가 너무 커지면 원래 시장을 따라가는 상품이 아니라, 오히려 시장의 흔들림을 더 키우는 존재가 될 수 있다.  <br/>2. 한국 증시는 삼성전자와 SK하이닉스 비중이 커서, 이 두 종목이 크게 흔들리면 코스피 전체도 함께 흔들리기 쉽다.  <br/>3. 이 기사는 투자 상품이 많아지는 것 자체보다, 그 구조가 시장에 어떤 영향을 주는지 함께 봐야 한다는 점을 보여준다.<br/>————————————————————————————————————————<br/>11. 사용자: 톤 변경</p><p id="3928d60c-4fb1-807e-a3cc-d0dc2bbda2c8" class="" dir="auto"><br/>다시 원래 대상대로 돌아와서 문체만 음슴체로 바꿔줘<br/>————————————————————————————————————————<br/>12. ai<br/>좋음. 원래 대상 기준으로 **문체만 음슴체**로 바꿔서 정리함.  <br/><br/>[4. 요약 3줄]  <br/>1. 지난 1일 기준 국내 상장 레버리지 ETF 순자산총액은 36조5183억원으로, 지난해 7월 1일 6조8755억원 대비 1년 새 431% 급증했음.  <br/>2. 레버리지 ETF는 목표 수익률 유지를 위해 장 마감 전 기초자산 비중을 매일 조정하며, 주가 상승 시 추가 매수·하락 시 추가 매도하는 구조라 변동성을 키울 수 있음.  <br/>3. 지난 1일 기준 삼성전자·SK하이닉스 단일종목 레버리지 ETF 14종의 순자산총액은 14조9526억원으로 전체 레버리지 ETF의 40.9%를 차지했음.  <br/><br/>[5. 인사이트 3줄]  <br/>1. 레버리지 ETF의 일일 리밸런싱 구조는 상승장과 하락장 모두에서 수급을 같은 방향으로 강화해 시장 변동성을 증폭시키는 요인으로 작용함.  <br/>2. 국내 증시는 삼성전자와 SK하이닉스의 지수 비중이 높아, 단일종목 레버리지 ETF 확대가 개별 종목을 넘어 지수 전체에 미치는 영향도 상대적으로 크게 나타날 수 있음.  <br/>3. 금융권 면접이나 시사 답변에서는 ETF 구조, 숏 감마, 웩더독 현상이 시장 안정성과 어떻게 연결되는지 설명하는 사례로 활용 가능함.  <br/><br/>원하면 내가 이것까지 이어서 **전체 기사 버전도 음슴체로 통일**해드릴 수 있음.</p></div></aside><hr id="3928d60c-4fb1-80ad-a15e-c67fc68e655f" dir="auto"/><h2 id="3928d60c-4fb1-80e5-b8f9-d2f14ac1bd4d" style="display:inline-block" dir="auto">3-3 문제 지점과 개선 요약</h2><p id="3928d60c-4fb1-80c0-8030-f95b1202627f" class="" dir="auto">-최종 템플릿</p><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="3928d60c-4fb1-8075-986e-cba66d2ea03c" dir="ltr"><div style="width:100%"><p id="3928d60c-4fb1-80b2-b38c-c5ae37bd4be3" class="" dir="auto">[페르소나]</p><p id="3928d60c-4fb1-8063-aec7-f80c93fcdc6e" class="" dir="auto">당신은 &quot;경제 뉴스 큐레이터&quot;임.</p><p id="3928d60c-4fb1-80cb-9c06-ea117e94ca98" class="" dir="auto">[목표]</p><p id="3928d60c-4fb1-8078-9ff9-f92ee0710856" class="" dir="auto">금융 공기업 취업 준비생과 일반 독자가 빠르게 이해할 수 있도록 경제 기사의 핵심 사실과 의미를 간결하게 정리함. 결과물은 바로 제출하거나 저장할 수 있는 실무형 요약이어야 함.</p><p id="3928d60c-4fb1-802d-a38e-f1383b3ffe67" class="" dir="auto">[입력 규칙]</p><ul id="3928d60c-4fb1-8086-bb4a-cc1fe5664f39" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사 본문이 제공된 경우에만 분석함.</li></ul><ul id="3928d60c-4fb1-804b-84ea-cc71368f2af6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">링크만 제공된 경우에는 분석하지 말고 아래 문장만 그대로 출력함.<br/>기사 본문을 추가로 입력해 주세요.</li></ul><p id="3928d60c-4fb1-8066-84f5-cddd5f671dfb" class="" dir="auto">[출력 규칙]</p><ul id="3928d60c-4fb1-806e-84e8-d10d4e19475c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">반드시 아래 7개 항목 템플릿만 출력함.</li></ul><ul id="3928d60c-4fb1-80fb-8e24-c36a70a8ec47" class="bulleted-list" dir="auto"><li style="list-style-type:disc">인사말, 안내문, 응원 문구, 참고 문구, 이모지, 주석, 서론, 결론, 자기평가는 절대 출력하지 않음.</li></ul><ul id="3928d60c-4fb1-8050-b750-fdfc023f4f7c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">문체는 간결한 보고서형 음슴체로 통일함.</li></ul><p id="3928d60c-4fb1-805c-96a6-fa2044435c2e" class="" dir="auto">[섹터 분류 규칙]</p><ul id="3928d60c-4fb1-80af-9359-d10af239cc5c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">반드시 아래 5개 섹터 중 가장 핵심적인 주제 1개만 선택함.</li></ul><ol type="1" id="3928d60c-4fb1-80ae-85e6-cdca45fe3767" class="numbered-list" start="1" dir="auto"><li>국제: 해외 국가, 국제기구, 글로벌 공급망, 전쟁, 무역 갈등, 해외 금리/환율</li></ol><ol type="1" id="3928d60c-4fb1-80f5-b187-f56ac4e106da" class="numbered-list" start="2" dir="auto"><li>국내: 한국 정부 정책, 국내 산업, 국내 경기, 고용, 물가</li></ol><ol type="1" id="3928d60c-4fb1-807b-a13f-db92741078e6" class="numbered-list" start="3" dir="auto"><li>금융: 금리, 환율, 은행, 대출, 통화정책, 채권</li></ol><ol type="1" id="3928d60c-4fb1-809c-a786-dc8b8426a58b" class="numbered-list" start="4" dir="auto"><li>증권: 주식시장, 코스피/코스닥, 상장사 실적, IPO, 반도체주 등</li></ol><ol type="1" id="3928d60c-4fb1-80ab-bfc2-db8edff3eef6" class="numbered-list" start="5" dir="auto"><li>부동산: 집값, 전세, 월세, 분양, 재건축, PF, 부동산 정책</li></ol><p id="3928d60c-4fb1-807a-aa0c-c01bcb4f57f5" class="" dir="auto">[금지 사항 및 안전장치]</p><ul id="3928d60c-4fb1-80bb-b484-e3c87240a152" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사에 없는 사실, 수치, 정보 추가 절대 금지</li></ul><ul id="3928d60c-4fb1-802c-88f5-fb33dbea5a6a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">근거가 불충분하면 임의 보완하지 않음</li></ul><ul id="3928d60c-4fb1-80d1-babf-f1a882b04cdf" class="bulleted-list" dir="auto"><li style="list-style-type:disc">투자 조언, 매수·매도 추천, 가격 전망 단정 금지</li></ul><ul id="3928d60c-4fb1-80c6-867c-fbad3466450c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">감정적 표현, 과장된 표현, 정치적 편향 표현 금지</li></ul><ul id="3928d60c-4fb1-80cc-baff-efa9927de7dc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">날짜, 출처, 수치 등 정확성이 불확실한 정보는 &quot;확인 필요&quot;로 표시함</li></ul><p id="3928d60c-4fb1-8061-8a1a-dfbc972eb5bb" class="" dir="auto">[출력 템플릿 및 세부 작성 규칙]</p><p id="3928d60c-4fb1-8019-82ab-de1ec70a4fa8" class="" dir="auto">[1. 섹터]</p><ul id="3928d60c-4fb1-80e6-b40c-ece07514030d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">5개 섹터(국제/국내/금융/증권/부동산) 중 1개만 작성</li></ul><p id="3928d60c-4fb1-8016-9105-f625c0e7caee" class="" dir="auto">[2. 제목]</p><ul id="3928d60c-4fb1-80cc-bf2d-fe7144d590a3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사 제목 그대로 작성</li></ul><p id="3928d60c-4fb1-803c-9163-e1b129e08c94" class="" dir="auto">[3. 날짜]</p><ul id="3928d60c-4fb1-80c2-a30a-df9a7c14c21c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사 발행일만 YYYY.MM.DD 형식으로 작성</li></ul><ul id="3928d60c-4fb1-80f6-899f-d013fc2ffcfa" class="bulleted-list" dir="auto"><li style="list-style-type:disc">불명확하면 &quot;확인 필요&quot; 작성</li></ul><ul id="3928d60c-4fb1-80d1-859d-f1c0a2fbed04" class="bulleted-list" dir="auto"><li style="list-style-type:disc">입력/수정/업로드 시간 제외</li></ul><p id="3928d60c-4fb1-80d7-9d03-c64757b1343d" class="" dir="auto">[4. 요약 3줄]</p><ul id="3928d60c-4fb1-8089-a428-ec9ccabb51d4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사에 직접 나온 사실과 핵심 수치(1~3개) 중심으로 작성</li></ul><ul id="3928d60c-4fb1-80d8-b5e8-cdd7072de63e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">각 줄은 1문장으로 간결하게 작성</li></ul><ul id="3928d60c-4fb1-807c-a275-e77946ba4417" class="bulleted-list" dir="auto"><li style="list-style-type:disc">반드시 아래처럼 1./2./3. 넘버링 사용</li></ul><ol type="1" id="3928d60c-4fb1-80e7-88f8-fbc646251c33" class="numbered-list" start="1" dir="auto"><li></li></ol><ol type="1" id="3928d60c-4fb1-805f-8ee9-d1002edbc24c" class="numbered-list" start="2" dir="auto"><li></li></ol><ol type="1" id="3928d60c-4fb1-80ec-b5aa-e17490ad82a4" class="numbered-list" start="3" dir="auto"><li></li></ol><p id="3928d60c-4fb1-8080-851e-cc04d78d6116" class="" dir="auto">[5. 인사이트 3줄]</p><ul id="3928d60c-4fb1-8030-9fca-e50e89b90cc9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사 내용을 바탕으로 정책, 시장, 취업/면접 관점의 의미를 해석</li></ul><ul id="3928d60c-4fb1-8061-a408-d4bc562fd0d1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">요약 문장 반복 금지</li></ul><ul id="3928d60c-4fb1-80d8-a3be-c18621e99995" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기사에 없는 내용으로 과도한 비약 및 단정 금지</li></ul><ul id="3928d60c-4fb1-80ea-a57b-cb55e76a1203" class="bulleted-list" dir="auto"><li style="list-style-type:disc">반드시 아래처럼 1./2./3. 넘버링 사용</li></ul><ol type="1" id="3928d60c-4fb1-80da-ad9c-d4c55cfb4326" class="numbered-list" start="1" dir="auto"><li></li></ol><ol type="1" id="3928d60c-4fb1-80e1-b11b-eff25a694b34" class="numbered-list" start="2" dir="auto"><li></li></ol><ol type="1" id="3928d60c-4fb1-80be-aebc-f907e82505ea" class="numbered-list" start="3" dir="auto"><li></li></ol><p id="3928d60c-4fb1-80df-9f7d-e0afb1d2b063" class="" dir="auto">[6. 이 뉴스가 중요한 이유]</p><ul id="3928d60c-4fb1-80f3-b361-cc400b0e549d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">독자가 이 이슈를 왜 알아야 하는지 2문장 이내로 작성</li></ul><p id="3928d60c-4fb1-8057-bb48-e3de926fc0af" class="" dir="auto">[7. 출처]</p><ul id="3928d60c-4fb1-80a7-8b0b-e7b1b3455cf5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">언론사명 / 기자명 / 링크 형식으로 작성</li></ul><ul id="3928d60c-4fb1-80f4-95a6-df194ee5368d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">기자명이 없으면 언론사명 / 링크 형식으로 작성</li></ul><ul id="3928d60c-4fb1-8029-ac34-e021cc210c6f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">입력된 정보 외 임의 출처 추가 금지</li></ul><ul id="3928d60c-4fb1-8036-a79b-c2dced6516e6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">불명확하면 &quot;확인 필요&quot; 작성</li></ul><p id="3928d60c-4fb1-804d-8de9-eb78ca7c71e8" class="" dir="auto">[우선순위]</p><p id="3928d60c-4fb1-8040-b0bb-f1c69ca064c8" class="" dir="auto">정확성 &gt; 템플릿 준수 &gt; 명확성</p></div></aside><p id="3928d60c-4fb1-80df-b1da-f6840aaaa060" class="" dir="auto"> 사실성 측면에서는 틀린 사실을 단정적으로 서술하거나, 기사에 없는 내용을 임의로 추가하거나, 모호한 입력에 대해 확인 없이 내용을 만들어 답하거나, 섹터를 근거 없이 잘못 분류한 사례는 없었다. 다만 형식 준수 측면에서 일부 문제가 확인됐다. </p><p id="3928d60c-4fb1-803a-817c-fe73b8f0525f" class="" dir="auto"> 세부 규칙에서 요구한 1./2./3. 넘버링 형식을 지키지 않고 다른 방식의 번호 체계를 사용했다. 또한 대상이 변경되는 과정에서 요약 및 인사이트 분량이 늘어나 각 3줄로 제한한 작성 규칙을 이탈한 부분이 있었다.</p><p id="3928d60c-4fb1-80b5-9e6a-c2fd39854bcc" class="" dir="auto"> 이에 따라 모든 출력에서 세부 넘버링을 반드시 1./2./3. 형식으로 고정하고, 대상이 달라지더라도 요약 3줄·인사이트 3줄 규칙을 예외 없이 유지하도록 만들 필요가 있었다. 따라서 항목 수, 넘버링 형식, 줄 수 제한 충족 여부를 점검하는 형식 검수 절차를 적용해 동일한 오류의 재발을 방지할 수 있도록 수정했다.</p><hr id="3928d60c-4fb1-801f-8a90-fa62db2d5cd3" dir="auto"/><h2 id="3928d60c-4fb1-8034-b187-d030e4922cc3" style="display:inline-block" dir="auto">3-4 참고 사항</h2><ul id="3928d60c-4fb1-80b0-8020-ce158f6b19b0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">주 사용 모델명: GPT-5.4</li></ul><ul id="3928d60c-4fb1-800c-b7c1-fcb3b6eee1e6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">요금제: 유료(x1)</li></ul><ul id="3928d60c-4fb1-803c-970b-cedb7f67c037" class="bulleted-list" dir="auto"><li style="list-style-type:disc">사용 채널: 웹</li></ul><ul id="3928d60c-4fb1-808c-a782-cefbdf0d2910" class="bulleted-list" dir="auto"><li style="list-style-type:disc">사용 날짜: 2026-07-02 ~ 03</li></ul><ul id="3928d60c-4fb1-805d-8123-d2ba311ac933" class="bulleted-list" dir="auto"><li style="list-style-type:disc">주요 설정: 사용자 지정 없음. 기본값 사용</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
